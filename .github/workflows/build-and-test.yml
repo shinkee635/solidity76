@@ -9,13 +9,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+
       - name: Download and build Boost library
         run: |
           chmod +x ./scripts/install_boost_1_73.sh
           ./scripts/install_boost_1_73.sh
+
       - name: Build Solidity
         run: |
           ./scripts/build.sh
+          
       - name: Run tests
         run: |
           ./scripts/tests.sh
