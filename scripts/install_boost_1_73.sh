@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
 set -e
 
-BOOST_VER=1.71.0
-BOOST_VERSION=1_71_0
+BOOST_VER=1.73.0
+BOOST_VERSION=1_73_0
 DLDIR="$GITHUB_WORKSPACE/solidity/deps/downloads"
 mkdir -p "$DLDIR"
 (
