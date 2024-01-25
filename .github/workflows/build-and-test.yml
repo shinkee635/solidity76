@@ -11,6 +11,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Download and build Boost library
         run: |
+          chmod +x ./scripts/install_boost_1_71.sh
           ./scripts/install_boost_1_71.sh
       - name: Build Solidity
         run: |
