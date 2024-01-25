@@ -18,7 +18,7 @@ mkdir -p "$DLDIR"
 
 	tar xvjf "$BOOST_TAR"
     cd boost_$BOOST_VERSION
-   	./bootstrap --prefix="$GITHUB_WORKSPACE/solidity/build/deps"
+   	./bootstrap.sh --prefix="$GITHUB_WORKSPACE/solidity/build/deps"
     ./b2
     ./b2 install
 )
