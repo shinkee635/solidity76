@@ -9,14 +9,14 @@ mkdir -p "$DLDIR"
     cd "$DLDIR"
 	BOOST_TAR="boost_$BOOST_VERSION.tar.bz2"
 
-	if [ ! -f "$SOFTWARE_TAR" ]; then
-    	echo "Downloading $SOFTWARE_TAR..."
-    	wget "https://boostorg.jfrog.io/artifactory/main/release/$BOOST_VER/source/$SOFTWARE_TAR"
+	if [ ! -f "$BOOST_TAR" ]; then
+    	echo "Downloading $BOOST_TAR..."
+    	wget "https://boostorg.jfrog.io/artifactory/main/release/$BOOST_VER/source/$BOOST_TAR"
 	else
-    	echo "$SOFTWARE_TAR already exists, skipping download."
+    	echo "$BOOST_TAR already exists, skipping download."
 	fi
 
-	tar xvjf "$SOFTWARE_TAR"
+	tar xvjf "$BOOST_TAR"
     cd boost_$BOOST_VERSION
    	./bootstrap --prefix="$GITHUB_WORKSPACE/solidity/build/deps"
     ./b2
