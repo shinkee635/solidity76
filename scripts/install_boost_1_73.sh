@@ -5,6 +5,8 @@ BOOST_VER=1.73.0
 BOOST_VERSION=1_73_0
 echo "LD_LIBRARY_PATH=$GITHUB_WORKSPACE/solidity/build/deps/lib" >> $GITHUB_ENV
 echo "CPATH=$GITHUB_WORKSPACE/solidity/build/deps/include" >> $GITHUB_ENV
+echo "C_INCLUDE_PATH=$GITHUB_WORKSPACE/solidity/build/deps/include" >> $GITHUB_ENV
+echo "CPLUS_INCLUDE_PATH=$GITHUB_WORKSPACE/solidity/build/deps/include" >> $GITHUB_ENV
 DLDIR="$GITHUB_WORKSPACE/solidity/deps/downloads"
 mkdir -p "$DLDIR"
 (
