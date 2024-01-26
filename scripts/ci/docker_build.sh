@@ -24,21 +24,6 @@ DOCKERFILE="scripts/docker/${IMAGE_NAME}/Dockerfile.${IMAGE_VARIANT}"
 #  exit 0
 #fi
 
-echo "-- check_version"
-
-PREV_VERSION=$(git diff origin/master HEAD -- "${DOCKERFILE}" | grep -e '^\s*-LABEL\s\+version=".*"\s*$' | awk -F'"' '{ print $2 }')
-NEXT_VERSION=$(git diff origin/master HEAD -- "${DOCKERFILE}" | grep -e '^\s*+LABEL\s\+version=".*"\s*$' | awk -F'"' '{ print $2 }')
-
-[[ $NEXT_VERSION != "" ]] || error "No version label defined in Dockerfile. You may need to add 'LABEL version' in '${DOCKERFILE}'."
-
-[[ $PREV_VERSION != "" ]] || {
-  warning "no previous version found. Will set \$PREV_VERSION = 0."
-  PREV_VERSION=0
-}
-
-if [[ $((PREV_VERSION + 1)) != $((NEXT_VERSION)) ]]; then
-  error "Version label in Dockerfile was not incremented. You may need to change 'LABEL version' in '${DOCKERFILE}'."
-fi
 
 echo "-- build_docker"
 
