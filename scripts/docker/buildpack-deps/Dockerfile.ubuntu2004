@@ -83,7 +83,7 @@ RUN cd boost_${BOOST_VERSION} && \
 	./b2 install
 
 # Set the environment variables
-ENV LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH}
+ENV LD_LIBRARY_PATH=/usr/local/lib:/usr/lib/x86_64-linux-gnu:${LD_LIBRARY_PATH}
 ENV BOOST_LIBRARYDIR=/usr/local/lib
 ENV BOOST_INCLUDEDIR=/usr/local/include
 
