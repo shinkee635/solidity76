@@ -19,15 +19,15 @@ DOCKERFILE="scripts/docker/${IMAGE_NAME}/Dockerfile.${IMAGE_VARIANT}"
 #echo "-- check_dockerfile_was_changed"
 
 # exit, if the dockerfile was not changed.
-if git diff --quiet origin/develop HEAD -- "${DOCKERFILE}"; then
-  echo "${DOCKERFILE} was not changed. Nothing to do."
-  exit 0
-fi
+#if git diff --quiet origin/develop HEAD -- "${DOCKERFILE}"; then
+#  echo "${DOCKERFILE} was not changed. Nothing to do."
+#  exit 0
+#fi
 
 echo "-- check_version"
 
-PREV_VERSION=$(git diff origin/develop HEAD -- "${DOCKERFILE}" | grep -e '^\s*-LABEL\s\+version=".*"\s*$' | awk -F'"' '{ print $2 }')
-NEXT_VERSION=$(git diff origin/develop HEAD -- "${DOCKERFILE}" | grep -e '^\s*+LABEL\s\+version=".*"\s*$' | awk -F'"' '{ print $2 }')
+PREV_VERSION=$(git diff origin/master HEAD -- "${DOCKERFILE}" | grep -e '^\s*-LABEL\s\+version=".*"\s*$' | awk -F'"' '{ print $2 }')
+NEXT_VERSION=$(git diff origin/master HEAD -- "${DOCKERFILE}" | grep -e '^\s*+LABEL\s\+version=".*"\s*$' | awk -F'"' '{ print $2 }')
 
 [[ $NEXT_VERSION != "" ]] || error "No version label defined in Dockerfile. You may need to add 'LABEL version' in '${DOCKERFILE}'."
 
@@ -50,16 +50,3 @@ docker build "scripts/docker/${IMAGE_NAME}" --file "scripts/docker/${IMAGE_NAME}
 echo "-- test_docker @ '${PWD}'"
 
 docker run --rm --volume "${PWD}:/root/project" "${IMAGE_NAME}" "/root/project/scripts/ci/${IMAGE_NAME}_test_${IMAGE_VARIANT}.sh"
-
-echo "-- push_docker"
-
-VERSION=$(docker inspect --format='{{.Config.Labels.version}}' "${IMAGE_NAME}")
-DOCKER_IMAGE_ID="${DOCKER_REPOSITORY}:${IMAGE_VARIANT}"
-
-docker tag "${IMAGE_NAME}" "${DOCKER_IMAGE_ID}-${VERSION}"
-docker push "${DOCKER_IMAGE_ID}-${VERSION}"
-
-REPO_DIGEST=$(docker inspect --format='{{.RepoDigests}}' "${DOCKER_IMAGE_ID}-${VERSION}")
-
-echo "DOCKER_IMAGE=${DOCKER_IMAGE_ID}-${VERSION}" >> "$GITHUB_ENV"
-echo "DOCKER_REPO_DIGEST=${REPO_DIGEST}" >> "$GITHUB_ENV"

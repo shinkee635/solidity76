@@ -7,8 +7,6 @@ on:
 jobs:
   build-and-test:
     env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
       DOCKER_REPOSITORY: solbuildpackpusher/solidity-buildpack-deps
       IMAGE_NAME: buildpack-deps
 
@@ -22,8 +20,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Upgrade ${{ env.IMAGE_NAME }}-${{ matrix.image_variant }}
+      - name: Build and test ${{ env.IMAGE_NAME }}-${{ matrix.image_variant }}
         run: |
-          echo ${DOCKERHUB_TOKEN} | docker login -u solbuildpackpusher --password-stdin
-          scripts/ci/docker_upgrade.sh ${{ env.IMAGE_NAME }} ${{ matrix.image_variant }} ${{ env.DOCKER_REPOSITORY }}
-          docker logout
+          scripts/ci/docker_build.sh ${{ env.IMAGE_NAME }} ${{ matrix.image_variant }} ${{ env.DOCKER_REPOSITORY }}
