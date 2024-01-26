@@ -8,6 +8,7 @@ jobs:
   build-and-test:
     env:
       DOCKER_REPOSITORY: solbuildpackpusher/solidity-buildpack-deps
+      CONTAINER_NAME: bd_container
       IMAGE_NAME: buildpack-deps
 
     runs-on: ubuntu-latest
@@ -23,8 +24,8 @@ jobs:
       - name: Build ${{ env.IMAGE_NAME }}-${{ matrix.image_variant }}
         run: |
           chmod +x scripts/ci/docker_build.sh
-          scripts/ci/docker_build.sh ${{ env.IMAGE_NAME }} ${{ matrix.image_variant }} ${{ env.DOCKER_REPOSITORY }}
+          scripts/ci/docker_build.sh ${{ env.IMAGE_NAME }} ${{ matrix.image_variant }} ${{ env.DOCKER_REPOSITORY }} ${{ env.CONTAINER_NAME }}
       - name: Test the build
         run: |
           chmod +x scripts/ci/docker_test.sh
-          scripts/ci/docker_test.sh ${{ env.IMAGE_NAME }} ${{ matrix.image_variant }} ${{ env.DOCKER_REPOSITORY }}
+          scripts/ci/docker_test.sh ${{ env.IMAGE_NAME }} ${{ matrix.image_variant }} ${{ env.DOCKER_REPOSITORY }} ${{ env.CONTAINER_NAME }}

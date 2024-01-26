@@ -9,11 +9,12 @@ function warning() {
   echo >&2 "WARNING: ${1}"
 }
 
-[[ $# == 3 ]] || error "Expected exactly 3 parameters: '${0} <IMAGE_NAME> <IMAGE_VARIANT> <DOCKER_REPOSITORY>'."
+#[[ $# == 3 ]] || error "Expected exactly 3 parameters: '${0} <IMAGE_NAME> <IMAGE_VARIANT> <DOCKER_REPOSITORY>'."
 
 IMAGE_NAME="${1}"
 IMAGE_VARIANT="${2}"
 DOCKER_REPOSITORY="${3}"
+CONTAINER_NAME="${4}"
 DOCKERFILE="scripts/docker/${IMAGE_NAME}/Dockerfile.${IMAGE_VARIANT}"
 
 #echo "-- check_dockerfile_was_changed"
@@ -34,4 +35,4 @@ docker build "scripts/docker/${IMAGE_NAME}" --file "scripts/docker/${IMAGE_NAME}
 
 echo "-- test_docker @ '${PWD}'"
 
-docker run --rm --volume "${PWD}:/root/project" "${IMAGE_NAME}" "/root/project/scripts/ci/${IMAGE_NAME}_test_${IMAGE_VARIANT}.sh"
+docker run -d --name ${CONTAINER_NAME} --volume "${PWD}:/root/project" "${IMAGE_NAME}" "/root/project/scripts/ci/${IMAGE_NAME}_test_${IMAGE_VARIANT}.sh"
