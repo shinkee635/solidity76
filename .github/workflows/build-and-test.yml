@@ -25,7 +25,5 @@ jobs:
       - name: Upgrade ${{ env.IMAGE_NAME }}-${{ matrix.image_variant }}
         run: |
           echo ${DOCKERHUB_TOKEN} | docker login -u solbuildpackpusher --password-stdin
-
-      - name: Build and test
           scripts/ci/docker_upgrade.sh ${{ env.IMAGE_NAME }} ${{ matrix.image_variant }} ${{ env.DOCKER_REPOSITORY }}
-
+          docker logout
