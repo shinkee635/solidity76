@@ -82,8 +82,14 @@ RUN cd boost_${BOOST_VERSION} && \
     ./b2 && \
 	./b2 install
 
+# Set the environment variables
+ENV LD_LIBRARY_PATH=/usr/local/lib:${LD_LIBRARY_PATH}
+ENV BOOST_LIBRARYDIR=/usr/local/lib
+ENV BOOST_INCLUDEDIR=/usr/local/include
+
 FROM base
 COPY --from=libraries /usr/lib /usr/lib
 COPY --from=libraries /usr/bin /usr/bin
 COPY --from=libraries /usr/include /usr/include
-
+COPY --from=libraries /usr/local/lib /usr/local/lib
+COPY --from=libraries /usr/local/include /usr/local/include
