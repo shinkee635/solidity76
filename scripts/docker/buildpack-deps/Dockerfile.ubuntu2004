@@ -35,8 +35,6 @@ RUN set -ex; \
 		build-essential \
 		software-properties-common \
 		cmake ninja-build \
-		libboost-filesystem-dev libboost-test-dev libboost-system-dev \
-		libboost-program-options-dev \
 		libcvc4-dev libz3-static-dev \
 		; \
 	apt-get install -qy python3-pip python3-sphinx; \
@@ -68,6 +66,21 @@ RUN set -ex; \
 	ninja; \
 	ninja install/strip; \
 	rm -rf /usr/src/hera
+
+# Boost
+ARG BOOST_VER=1.71.0
+ARG BOOST_VERSION=1_71_0
+
+# Download and unpack Boost
+RUN wget https://boostorg.jfrog.io/artifactory/main/release/${BOOST_VER}/source/boost_${BOOST_VERSION}.tar.bz2 && \
+    tar -xjf boost_${BOOST_VERSION}.tar.bz2 && \
+    rm boost_${BOOST_VERSION}.tar.bz2
+
+# Build and install Boost
+RUN cd boost_${BOOST_VERSION} && \
+    ./bootstrap.sh && \
+    ./b2 && \
+	./b2 install
 
 FROM base
 COPY --from=libraries /usr/lib /usr/lib

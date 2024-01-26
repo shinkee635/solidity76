@@ -20,7 +20,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Build and test ${{ env.IMAGE_NAME }}-${{ matrix.image_variant }}
+      - name: Build ${{ env.IMAGE_NAME }}-${{ matrix.image_variant }}
         run: |
           chmod +x scripts/ci/docker_build.sh
           scripts/ci/docker_build.sh ${{ env.IMAGE_NAME }} ${{ matrix.image_variant }} ${{ env.DOCKER_REPOSITORY }}
+      - name: Test the build
+        run: |
+          chmod +x scripts/tests.sh
+          scripts/tests.sh
