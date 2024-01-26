@@ -6,24 +6,26 @@ on:
 
 jobs:
   build-and-test:
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+      DOCKER_REPOSITORY: solbuildpackpusher/solidity-buildpack-deps
+      IMAGE_NAME: buildpack-deps
+
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        image_variant: [ubuntu2004]
+
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.8'
+      - name: Upgrade ${{ env.IMAGE_NAME }}-${{ matrix.image_variant }}
+        run: |
+          echo ${DOCKERHUB_TOKEN} | docker login -u solbuildpackpusher --password-stdin
 
-      - name: Download and build Boost library
-        run: |
-          chmod +x ./scripts/install_boost_1_73.sh
-          ./scripts/install_boost_1_73.sh
+      - name: Build and test
+          scripts/ci/docker_upgrade.sh ${{ env.IMAGE_NAME }} ${{ matrix.image_variant }} ${{ env.DOCKER_REPOSITORY }}
 
-      - name: Build Solidity
-        run: |
-          ./scripts/build.sh
-          
-      - name: Run tests
-        run: |
-          ./scripts/tests.sh

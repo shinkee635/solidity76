@@ -16,13 +16,13 @@ IMAGE_VARIANT="${2}"
 DOCKER_REPOSITORY="${3}"
 DOCKERFILE="scripts/docker/${IMAGE_NAME}/Dockerfile.${IMAGE_VARIANT}"
 
-echo "-- check_dockerfile_was_changed"
+#echo "-- check_dockerfile_was_changed"
 
 # exit, if the dockerfile was not changed.
-if git diff --quiet origin/develop HEAD -- "${DOCKERFILE}"; then
-  echo "${DOCKERFILE} was not changed. Nothing to do."
-  exit 0
-fi
+#if git diff --quiet origin/develop HEAD -- "${DOCKERFILE}"; then
+#  echo "${DOCKERFILE} was not changed. Nothing to do."
+#  exit 0
+#fi
 
 echo "-- check_version"
 
