@@ -35,7 +35,7 @@ RUN set -ex; \
 		build-essential \
 		software-properties-common \
 		cmake ninja-build \
-		libcvc4-dev libz3-static-dev \
+		libcvc4-5 libcvc4-dev libz3-static-dev \
 		; \
 	apt-get install -qy python3-pip python3-sphinx; \
 	pip3 install codecov; \
