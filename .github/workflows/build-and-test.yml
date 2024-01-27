@@ -31,11 +31,11 @@ jobs:
           docker run -d --volume "${{ github.workspace }}:/root/project" --name ${{ env.CONTAINER_NAME }} ${{ env.IMAGE_NAME }}
       
       - name: Build Solidity
-          run: |
+        run: |
           docker exec ${{ env.CONTAINER_NAME }} "/root/project/scripts/ci/${{ env.IMAGE_NAME }}_test_${{ matrix.image_variant }}.sh"
       
       - name: Run Solidity Tests
-          run: |
+        run: |
           docker exec ${{ env.CONTAINER_NAME }} "/root/project/scripts/tests.sh"
 
       - name: Copy Directory
