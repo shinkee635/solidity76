@@ -40,7 +40,7 @@ jobs:
 
       - name: Copy Directory
         run: |
-          docker cp ${{ env.CONTAINER_NAME }}:/root/project/build ${{ github.workspace }}/build
+          docker cp ${{ env.CONTAINER_NAME }}:/root/project/build ${{ github.workspace }}/
 
       - name: Upload Artifact 
         uses: actions/upload-artifact@v3
