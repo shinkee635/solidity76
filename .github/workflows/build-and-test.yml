@@ -30,9 +30,9 @@ jobs:
         run: |
           docker run -d --volume "${ github.workspace }:/root/project" --name ${{ env.CONTAINER_NAME }} ${{ env.IMAGE_NAME }}
       
-      - name: Build Solidity
-        run: |
-          docker exec ${{ env.CONTAINER_NAME }} "/root/project/scripts/ci/${IMAGE_NAME}_test_${IMAGE_VARIANT}.sh"
+          #- name: Build Solidity
+          #run: |
+          #docker exec ${{ env.CONTAINER_NAME }} "/root/project/scripts/ci/${IMAGE_NAME}_test_${IMAGE_VARIANT}.sh"
       
           #- name: Run Solidity Tests
           #run: |
@@ -47,3 +47,8 @@ jobs:
         with:
           name: test-upload
           path: ${{ github.workspace }}/scripts
+
+      - name: Stop Docker
+        run: |
+          docker stop ${{ env.CONTAINER_NAME }}
+          docker rm ${{ env.CONTAINER_NAME }}
