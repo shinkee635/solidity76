@@ -18,6 +18,6 @@ CONTAINER_NAME="${4}"
 DOCKERFILE="scripts/docker/${IMAGE_NAME}/Dockerfile.${IMAGE_VARIANT}"
 
 echo "-- test_build @ '${PWD}'"
-docker exec ${CONTAINER_NAME} dpkg -l | grep libboost
+#docker exec ${CONTAINER_NAME} dpkg -l | grep libboost
 docker exec ${CONTAINER_NAME} "/root/project/scripts/tests.sh"
 docker stop ${CONTAINER_NAME}
