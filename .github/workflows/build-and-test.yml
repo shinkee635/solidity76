@@ -28,7 +28,7 @@ jobs:
 
       - name: Start Docker Container
         run: |
-          docker run -d --volume "${{ github.workspace }}:/root/project" --name ${{ env.CONTAINER_NAME }} ${{ env.IMAGE_NAME }}
+          docker run -d --volume "${{ github.workspace }}:/root/project" --name ${{ env.CONTAINER_NAME }} ${{ env.IMAGE_NAME }} tail -f /dev/null
       
       - name: Build Solidity
         run: |
