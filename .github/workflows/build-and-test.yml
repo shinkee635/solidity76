@@ -28,11 +28,11 @@ jobs:
 
       - name: Start Docker Container
         run: |
-          docker run -d --volume "${ github.workspace }:/root/project" --name ${{ env.CONTAINER_NAME }} ${{ env.IMAGE_NAME }}
+          docker run -d --volume "${{ github.workspace }}:/root/project" --name ${{ env.CONTAINER_NAME }} ${{ env.IMAGE_NAME }}
       
           #- name: Build Solidity
           #run: |
-          #docker exec ${{ env.CONTAINER_NAME }} "/root/project/scripts/ci/${IMAGE_NAME}_test_${IMAGE_VARIANT}.sh"
+          #docker exec ${{ env.CONTAINER_NAME }} "/root/project/scripts/ci/${{ env.IMAGE_NAME }}_test_${{ matrix.image_variant }}.sh"
       
           #- name: Run Solidity Tests
           #run: |
