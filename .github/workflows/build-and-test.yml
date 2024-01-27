@@ -25,7 +25,25 @@ jobs:
         run: |
           chmod +x scripts/ci/docker_build.sh
           scripts/ci/docker_build.sh ${{ env.IMAGE_NAME }} ${{ matrix.image_variant }} ${{ env.DOCKER_REPOSITORY }} ${{ env.CONTAINER_NAME }}
-      - name: Test the build
+
+      - name: Start Docker Container
         run: |
-          chmod +x scripts/ci/docker_test.sh
-          scripts/ci/docker_test.sh ${{ env.IMAGE_NAME }} ${{ matrix.image_variant }} ${{ env.DOCKER_REPOSITORY }} ${{ env.CONTAINER_NAME }}
+          docker run -d --volume "${ github.workspace }:/root/project" --name ${{ env.CONTAINER_NAME }} ${{ env.IMAGE_NAME }}
+      
+      - name: Build Solidity
+        run: |
+          docker exec ${{ env.CONTAINER_NAME }} "/root/project/scripts/ci/${IMAGE_NAME}_test_${IMAGE_VARIANT}.sh"
+      
+          #- name: Run Solidity Tests
+          #run: |
+          #docker exec ${{ env.CONTAINER_NAME }} "/root/project/scripts/ci/docker_test.sh"
+
+      - name: Copy Directory
+        run: |
+          docker cp ${{ env.CONTAINER_NAME }}:/root/project/scripts ${{ github.workspace }}/scripts
+
+      - name: Upload Artifact 
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-upload
+          path: ${{ github.workspace }}/scripts
