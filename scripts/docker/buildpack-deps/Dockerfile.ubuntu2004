@@ -68,8 +68,8 @@ RUN set -ex; \
 	rm -rf /usr/src/hera
 
 # Boost
-ARG BOOST_VER=1.76.0
-ARG BOOST_VERSION=1_76_0
+ARG BOOST_VER=1.68.0
+ARG BOOST_VERSION=1_68_0
 
 # Download and unpack Boost
 RUN wget https://boostorg.jfrog.io/artifactory/main/release/${BOOST_VER}/source/boost_${BOOST_VERSION}.tar.bz2 && \
