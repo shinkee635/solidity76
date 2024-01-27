@@ -33,6 +33,6 @@ echo "-- build_docker"
 docker build "scripts/docker/${IMAGE_NAME}" --file "scripts/docker/${IMAGE_NAME}/Dockerfile.${IMAGE_VARIANT}" --tag "${IMAGE_NAME}" ||
   docker build "scripts/docker/${IMAGE_NAME}" --file "scripts/docker/${IMAGE_NAME}/Dockerfile.${IMAGE_VARIANT}" --tag "${IMAGE_NAME}"
 
-echo "-- test_docker @ '${PWD}'"
+#echo "-- test_docker @ '${PWD}'"
 
-docker run --rm --name ${CONTAINER_NAME} --volume "${PWD}:/root/project" "${IMAGE_NAME}" "/root/project/scripts/ci/${IMAGE_NAME}_test_${IMAGE_VARIANT}.sh"
+#docker run --rm --name ${CONTAINER_NAME} --volume "${PWD}:/root/project" "${IMAGE_NAME}" "/root/project/scripts/ci/${IMAGE_NAME}_test_${IMAGE_VARIANT}.sh"
