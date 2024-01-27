@@ -14,10 +14,8 @@ function warning() {
 IMAGE_NAME="${1}"
 IMAGE_VARIANT="${2}"
 DOCKER_REPOSITORY="${3}"
-CONTAINER_NAME="${4}"
 DOCKERFILE="scripts/docker/${IMAGE_NAME}/Dockerfile.${IMAGE_VARIANT}"
 
 echo "-- test_build @ '${PWD}'"
-#docker exec ${CONTAINER_NAME} dpkg -l | grep libboost
-docker exec ${CONTAINER_NAME} "/root/project/scripts/tests.sh"
-docker stop ${CONTAINER_NAME}
+
+docker run --rm --volume "${PWD}:/root/project" "${IMAGE_NAME}" "/root/project/scripts/tests.sh"
