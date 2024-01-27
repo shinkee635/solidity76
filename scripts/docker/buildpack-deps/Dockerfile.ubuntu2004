@@ -35,7 +35,7 @@ RUN set -ex; \
 		build-essential \
 		software-properties-common \
 		cmake ninja-build \
-		libcvc4-5 libcvc4-dev libz3-static-dev \
+		libcvc4-5 libcvc4-dev libz3-dev \
 		; \
 	apt-get install -qy python3-pip python3-sphinx; \
 	pip3 install codecov; \
@@ -68,8 +68,8 @@ RUN set -ex; \
 	rm -rf /usr/src/hera
 
 # Boost
-ARG BOOST_VER=1.68.0
-ARG BOOST_VERSION=1_68_0
+ARG BOOST_VER=1.76.0
+ARG BOOST_VERSION=1_76_0
 
 # Download and unpack Boost
 RUN wget https://boostorg.jfrog.io/artifactory/main/release/${BOOST_VER}/source/boost_${BOOST_VERSION}.tar.bz2 && \
@@ -81,6 +81,21 @@ RUN cd boost_${BOOST_VERSION} && \
     ./bootstrap.sh && \
     ./b2 && \
 	./b2 install
+
+# z3
+ARG Z3_VER=4.8.8
+
+# Download and unpack z3
+#RUN wget https://github.com/Z3Prover/z3/archive/refs/tags/z3-${Z3_VER}.tar.gz && \
+#    tar -xzf z3-${Z3_VER}.tar.gz && \
+#    rm z3-${Z3_VER}.tar.gz
+
+#RUN cd z3_${Z3_VER} && \
+#    ./configure && \
+#	cd build && \
+#    make && \
+#	make install
+
 
 # Set the environment variables
 ENV LD_LIBRARY_PATH=/usr/local/lib:/usr/lib/x86_64-linux-gnu:${LD_LIBRARY_PATH}
