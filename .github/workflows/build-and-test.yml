@@ -46,7 +46,7 @@ jobs:
           docker exec ${{ env.CONTAINER_NAME }} bash -c 'echo "Test" > /root/project/build/build.txt'
           echo 'ls after mkdir in docker'
           ls ${{ github.workspace }}/build
-          docker cp ${{ env.CONTAINER_NAME }}:/root/project/build ${{ github.workspace }}
+          #docker cp ${{ env.CONTAINER_NAME }}:/root/project/build ${{ github.workspace }}
 
       - name: Upload Artifact 
         uses: actions/upload-artifact@v3
