@@ -23,6 +23,8 @@ jobs:
 
       - name: Build ${{ env.IMAGE_NAME }}-${{ matrix.image_variant }}
         run: |
+          echo 'ls before docker'
+          ls ${{ github.workspace }}/build
           chmod +x scripts/ci/docker_build.sh
           scripts/ci/docker_build.sh ${{ env.IMAGE_NAME }} ${{ matrix.image_variant }} ${{ env.DOCKER_REPOSITORY }} ${{ env.CONTAINER_NAME }}
 
@@ -40,9 +42,12 @@ jobs:
 
       - name: Copy Directory
         run: |
-          mkdir -p ${{ github.workspace }}/build
+          echo 'ls after docker'
+          ls {{ github.workspace }}/build
           docker exec ${{ env.CONTAINER_NAME }} mkdir /root/project/build
           docker exec ${{ env.CONTAINER_NAME }} bash -c 'echo "Test" > /root/project/build/build.txt'
+          echo 'ls after mkdir in docker'
+          ls {{ github.workspace }}/build
           docker cp ${{ env.CONTAINER_NAME }}:/root/project/build ${{ github.workspace }}
 
       - name: Upload Artifact 
