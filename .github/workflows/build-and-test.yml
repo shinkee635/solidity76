@@ -42,10 +42,10 @@ jobs:
         run: |
           docker exec ${{ env.CONTAINER_NAME }} mkdir /root/project/build
           echo 'ls before echo docker'
-          ls {{ github.workspace }}/build
+          ls ${{ github.workspace }}/build
           docker exec ${{ env.CONTAINER_NAME }} bash -c 'echo "Test" > /root/project/build/build.txt'
           echo 'ls after mkdir in docker'
-          ls {{ github.workspace }}/build
+          ls ${{ github.workspace }}/build
           docker cp ${{ env.CONTAINER_NAME }}:/root/project/build ${{ github.workspace }}
 
       - name: Upload Artifact 
