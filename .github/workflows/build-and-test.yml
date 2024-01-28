@@ -41,7 +41,7 @@ jobs:
       - name: Copy Directory
         run: |
           docker exec ${{ env.CONTAINER_NAME }} mkdir build
-          docker exec ${{ env.CONTAINER_NAME }} echo "Test" > build/build.txt
+          docker exec ${{ env.CONTAINER_NAME }} echo '"Test" > build/build.txt'
           docker cp ${{ env.CONTAINER_NAME }}:/root/project/build ${{ github.workspace }}
 
       - name: Upload Artifact 
