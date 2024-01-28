@@ -30,24 +30,14 @@ jobs:
         run: |
           docker run -d --volume "${{ github.workspace }}:/root/project" --name ${{ env.CONTAINER_NAME }} ${{ env.IMAGE_NAME }} tail -f /dev/null
       
-          #- name: Build Solidity
-          #run: |
-          #docker exec ${{ env.CONTAINER_NAME }} "/root/project/scripts/ci/${{ env.IMAGE_NAME }}_test_${{ matrix.image_variant }}.sh"
-      
-          #- name: Run Solidity Tests
-          #run: |
-          #docker exec ${{ env.CONTAINER_NAME }} "/root/project/scripts/tests.sh"
-
-      - name: Copy Directory
+      - name: Build Solidity
         run: |
-          docker exec ${{ env.CONTAINER_NAME }} mkdir /root/project/build
-          echo 'ls before echo docker'
-          ls ${{ github.workspace }}/build
-          docker exec ${{ env.CONTAINER_NAME }} bash -c 'echo "Test" > /root/project/build/build.txt'
-          echo 'ls after mkdir in docker'
-          ls ${{ github.workspace }}/build
-          #docker cp ${{ env.CONTAINER_NAME }}:/root/project/build ${{ github.workspace }}
-
+          docker exec ${{ env.CONTAINER_NAME }} "/root/project/scripts/ci/${{ env.IMAGE_NAME }}_test_${{ matrix.image_variant }}.sh"
+      
+      - name: Run Solidity Tests
+        run: |
+          docker exec ${{ env.CONTAINER_NAME }} "/root/project/scripts/tests.sh"
+          
       - name: Upload Artifact 
         uses: actions/upload-artifact@v3
         with:
