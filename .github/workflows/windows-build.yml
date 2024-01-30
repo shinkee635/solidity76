@@ -15,3 +15,8 @@ jobs:
       - name: Check CMake version
         shell: pwsh
         run: cmake --version
+
+      - name: Install Boost
+        shell: pwsh
+        run: |
+          .\scripts\install_deps.ps1
