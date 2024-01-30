@@ -1,0 +1,17 @@
+on:
+  push:
+    branches: [ windows-build ]
+  pull_request:
+    branches: [ windows-build ]
+
+jobs:
+  windows-build:
+
+    runs-on: windows-latest
+    
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Check CMake version
+        shell: pwsh
+        run: cmake --version
