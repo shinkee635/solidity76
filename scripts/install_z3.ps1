@@ -12,8 +12,8 @@ mkdir build
 cd build
 cmake -DZ3_BUID_LIBZ3_SHARED=OFF -DCMAKE_INSTALL_PREFIX="$githubWorkspace\build\deps\z3" -DCMAKE_BUILD_TYPE=Release ..
 cmake --build . --config Release --target libz3 -j
-cmake --install "$githubWorkspace\build\deps\z3" --config Release
+msbuild z3.sln /p:Configuration=Release /m:5 /v:minimal
 
 # Export to environment variable
 "Z3_DIR=$githubWorkspace\build\deps\z3" | Out-File -Append -FilePath $Env:GITHUB_ENV
-
+cd ..
