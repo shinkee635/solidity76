@@ -12,11 +12,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Check CMake version
-        shell: pwsh
-        run: cmake --version
+      - name: Setup Visual Studio Environment
+
 
       - name: Install Boost
         shell: pwsh
         run: |
+          & "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\Tools\VsDevCmd.bat"
           .\scripts\install_deps.ps1
