@@ -12,6 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Set up MSBuild
+        uses: microsoft/setup-msbuild@v1.1
+
       - name: Install z3
         shell: pwsh
         run: |
