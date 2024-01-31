@@ -16,9 +16,12 @@ jobs:
         shell: pwsh
         run: |
           .\scripts\install_z3.ps1
-          dir
-          dir deps
-
+      
+      - name: Install evmone
+        shell: pwsh
+        run: |
+          .\scripts\install_evmone.ps1
+          
           #- name: Install Boost
           #run: |
           #vcpkg install boost boost-system boost-filesystem boost-units boost-test boost-program-options
