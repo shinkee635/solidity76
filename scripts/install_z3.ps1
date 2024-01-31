@@ -4,8 +4,7 @@ $githubWorkspace = $Env:GITHUB_WORKSPACE
 # Needed for Invoke-WebRequest to work via CI.
 $progressPreference = "silentlyContinue"
 
-mkdir build
-mkdir build\deps
+mkdir build\deps\z3 -Force
 Invoke-WebRequest -URI "https://github.com/Z3Prover/z3/archive/refs/tags/z3-4.8.9.zip" -OutFile "z3.zip"
 Expand-Archive -LiteralPath z3.zip -DestinationPath .\
 cd z3-z3-4.8.9
