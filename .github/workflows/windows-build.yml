@@ -20,7 +20,9 @@ jobs:
         run: |
           .\scripts\install_z3.ps1
           ls build\deps
+          echo "ls build\deps\z3"
           ls build\deps\z3
+          echo "Finish this step"
       
       - name: Install evmone
         shell: pwsh

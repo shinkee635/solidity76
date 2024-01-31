@@ -14,7 +14,7 @@ cmake -G "Visual Studio 17 2022" -DZ3_BUILD_LIBZ3_SHARED=OFF -DCMAKE_INSTALL_PRE
 echo "cmake building"
 cmake --build . --config Release --target libz3 -j
 echo "msbuild z3.sln"
-msbuild z3.sln /p:Configuration=Release /m:5 /v:minimal
+msbuild z3.sln /p:Configuration=Release /m:12 /v:normal
 echo "Done building"
 
 # Export to environment variable
