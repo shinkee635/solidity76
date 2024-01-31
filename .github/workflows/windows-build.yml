@@ -38,8 +38,8 @@ jobs:
 
       - name: Build Solidity
         run: |
-          msbuild solidity.sln /p:Configuration=Release /m:5 /v:minimal
-          cmake --build . --target install --config Release 
+          msbuild solidity.sln /p:Configuration=Release /m:12 /v:minimal
+          cmake --build . --target install --config Release -j 12
           cd ..
 
       - name: Upload Artifact 
