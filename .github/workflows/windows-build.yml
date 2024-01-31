@@ -14,7 +14,7 @@ jobs:
 
       - name: Install Boost
         run: |
-          vcpkg install boost boost-system boost-filesystem boost-unit-test-framework boost-program-options
+          vcpkg install boost boost-system boost-filesystem boost-units boost-test boost-program-options
           vcpkg integrate install
 
       - name: Prepare sln File
