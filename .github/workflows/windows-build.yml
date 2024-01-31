@@ -14,5 +14,18 @@ jobs:
 
       - name: Install Boost
         run: |
-          vcpkg version
           vcpkg install boost-system boost-filesystem
+
+      - name: Prepare sln File
+        run: |
+          mkdir build
+          cd build
+          cmake -G "Visual Studio 17 2022" ..
+
+      - name: Build Solidity
+        run: |
+          cmake --build . --config Release
+
+      - name: List Build Directory
+        run: |
+          dir
