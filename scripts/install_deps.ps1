@@ -21,16 +21,16 @@ if ( -not (Test-Path $INSTALL_PATH) ) {
   7z x boost_${BUILD_VERSION}.7z -o".\" -y
   7z x boost_${NEWER_VERSION}.7z -o".\" -y
 
-  #Copy-Item -Path "boost_${NEWER_VERSION}\bootstrap.bat" -Destination "boost_${BUILD_VERSION}\bootstrap.bat"
-  #Copy-Item -Path "${NEWER_FILE_PATH}\engine\build.bat" -Destination "${BUILD_FILE_PATH}\engine\build.bat"
-  #Copy-Item -Path "${NEWER_FILE_PATH}\engine\config_toolset.bat" -Destination "${BUILD_FILE_PATH}\engine\config_toolset.bat"
-  #Copy-Item -Path "${NEWER_FILE_PATH}\engine\guess_toolset.bat" -Destination "${BUILD_FILE_PATH}\engine\guess_toolset.bat"
-  #Copy-Item -Path "${NEWER_FILE_PATH}\engine\vswhere_usability_wrapper.cmd" -Destination "${BUILD_FILE_PATH}\engine\vswhere_usability_wrapper.cmd"
-  #Copy-Item -Path "${NEWER_FILE_PATH}\tools\msvc.jam" -Destination "${BUILD_FILE_PATH}\engine\msvc.jam"
+  Copy-Item -Path "boost_${NEWER_VERSION}\bootstrap.bat" -Destination "boost_${BUILD_VERSION}\bootstrap.bat"
+  Copy-Item -Path "${NEWER_FILE_PATH}\engine\build.bat" -Destination "${BUILD_FILE_PATH}\engine\build.bat"
+  Copy-Item -Path "${NEWER_FILE_PATH}\engine\config_toolset.bat" -Destination "${BUILD_FILE_PATH}\engine\config_toolset.bat"
+  Copy-Item -Path "${NEWER_FILE_PATH}\engine\guess_toolset.bat" -Destination "${BUILD_FILE_PATH}\engine\guess_toolset.bat"
+  Copy-Item -Path "${NEWER_FILE_PATH}\engine\vswhere_usability_wrapper.cmd" -Destination "${BUILD_FILE_PATH}\engine\vswhere_usability_wrapper.cmd"
+  Copy-Item -Path "${NEWER_FILE_PATH}\tools\msvc.jam" -Destination "${BUILD_FILE_PATH}\tools\msvc.jam"
   cd boost_${BUILD_VERSION}
-  .\bootstrap.bat vc142
+  .\bootstrap.bat
   echo "Finish bootstraping, now start building"
-  .\b2 -j4 -d0 toolset=msvc-14.2 link=static runtime-link=static variant=release threading=multi address-model=64 --with-filesystem --with-system --with-program_options --with-test --prefix="$INSTALL_PATH" install
+  .\b2 -j4 -d0 link=static runtime-link=static variant=release threading=multi address-model=64 --with-filesystem --with-system --with-program_options --with-test --prefix="$INSTALL_PATH" install
   if ( -not $? ) { throw "Error building boost." }
 }
 "BOOST_VER=$BUILD_VER" | Out-File -Append -FilePath $Env:GITHUB_ENV
