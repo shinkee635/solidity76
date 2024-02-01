@@ -29,7 +29,8 @@ if ( -not (Test-Path $INSTALL_PATH) ) {
   Copy-Item -Path "${NEWER_FILE_PATH}\tools\msvc.jam" -Destination "${BUILD_FILE_PATH}\engine\msvc.jam"
   cd boost_${BUILD_VERSION}
   .\bootstrap.bat
-  .\b2 -j4 -d0 link=static runtime-link=static variant=release threading=multi address-model=64 --with-filesystem --with-system --with-program_options --with-test --prefix=$INSTALL_PATH install
+  echo "Finish bootstraping, now start building"
+  .\b2 -j4 -d1 link=static runtime-link=static variant=release threading=multi address-model=64 --with-filesystem --with-system --with-program_options --with-test --prefix=$INSTALL_PATH install
   if ( -not $? ) { throw "Error building boost." }
 }
 "BOOST_VER=$BUILD_VER" | Out-File -Append -FilePath $Env:GITHUB_ENV
