@@ -31,13 +31,18 @@ jobs:
       - name: Configure Solidity
         run: |
           cd ${{ github.workspace }}\build
-          cmake -G "Visual Studio 17 2022" -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded -DUSE_Z3=OFF -DUSE_CVC4=OFF -DBoost_DIR=${{ github.workspace }}\build\deps\boost\lib\cmake\Boost-${{ env.BOOST_VER }} ..
+          cmake -G "Visual Studio 17 2022" -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}\build\windows-release -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded -DUSE_Z3=OFF -DUSE_CVC4=OFF -DBoost_DIR=${{ github.workspace }}\build\deps\boost\lib\cmake\Boost-${{ env.BOOST_VER }} ..
           #cmake -G "Visual Studio 17 2022" -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded -DZ3_DIR="${{ github.workspace }}\build\deps\z3\lib\cmake\z3" -DBoost_DIR="${{ github.workspace }}\build\deps\boost\lib\cmake\Boost-1.78.0" ..
 
       - name: Build Solidity
         run: |
           cd ${{ github.workspace }}\build
           cmake --build . --config Release -j 12
+
+      - name: Install Solidity
+        run: |
+          cd ${{ github.workspace }}\build
+          cmake --install . 
 
       - name: Upload Artifact 
         uses: actions/upload-artifact@v3
