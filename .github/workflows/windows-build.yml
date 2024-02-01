@@ -15,13 +15,11 @@ jobs:
       - name: Setup MSVC Environment
         shell: pwsh
         run: |
-          $vsPath = & "${env:ProgramFiles}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -products * -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
-          $vsEnvScript = "${vsPath}\VC\Auxiliary\Build\vcvars64.bat"
-          "echo `". $vsEnvScript`"" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-
+                    
       - name: Install Boost
         shell: pwsh
         run: |
+          cmd.exe /c '"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 && powershell'
           .\scripts\install_deps.ps1
 
           #- name: Install z3
