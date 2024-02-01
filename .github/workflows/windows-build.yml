@@ -30,7 +30,7 @@ jobs:
         run: |
           mkdir build -Force
           cd ${{ github.workspace }}/build
-          cmake -G "Visual Studio 17 2022" -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded -DBoost_DIR="build\deps\boost\lib\cmake\Boost-*" ..
+          cmake -G "Visual Studio 17 2022" -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded -DZ3_DIR="build\deps\z3\lib\cmake\z3" -DBoost_DIR="build\deps\boost\lib\cmake\Boost-*" ..
 
       - name: Display Current Working Directory
         run: pwd
