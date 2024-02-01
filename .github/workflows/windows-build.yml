@@ -35,7 +35,7 @@ jobs:
 
       - name: Build Solidity
         run: |
-          cmake --build . --config Release -j 12
+          cmake --build .. --config Release -j 12
 
       - name: Upload Artifact 
         uses: actions/upload-artifact@v3
