@@ -30,7 +30,7 @@ if ( -not (Test-Path $INSTALL_PATH) ) {
   cd boost_${BUILD_VERSION}
   .\bootstrap.bat vc143
   echo "Finish bootstraping, now start building"
-  .\b2 -j4 -d0 toolset=msvc link=static runtime-link=static variant=release threading=multi address-model=64 --with-filesystem --with-system --with-program_options --with-test --prefix=$INSTALL_PATH install
+  .\b2 -j4 -d0 toolset=msvc-14.3 link=static runtime-link=static variant=release threading=multi address-model=64 --with-filesystem --with-system --with-program_options --with-test --prefix=$INSTALL_PATH install
   if ( -not $? ) { throw "Error building boost." }
 }
 "BOOST_VER=$BUILD_VER" | Out-File -Append -FilePath $Env:GITHUB_ENV

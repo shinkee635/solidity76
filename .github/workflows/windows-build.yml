@@ -19,7 +19,7 @@ jobs:
       - name: Install Boost
         shell: pwsh
         run: |
-          cmd.exe /c '"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && powershell'
+          #cmd.exe /c '"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat" && powershell'
           .\scripts\install_deps.ps1
 
           #- name: Install z3
