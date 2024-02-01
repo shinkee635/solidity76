@@ -9,7 +9,7 @@ $NEWER_VERSION = "1_78_0"
 $BUILD_VER = "1.76.0"
 $BUILD_VERSION = "1_76_0"
 
-$NEWER_FILE_PATH = "boost_${NEW_VERSION}\tools\build\src"
+$NEWER_FILE_PATH = "boost_${NEWER_VERSION}\tools\build\src"
 $BUILD_FILE_PATH = "boost_${BUILD_VERSION}\tools\build\src"
 
 if ( -not (Test-Path $INSTALL_PATH) ) {
