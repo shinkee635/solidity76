@@ -12,9 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up MSBuild
-        uses: microsoft/setup-msbuild@v1.1
-
       - name: Install z3
         shell: pwsh
         run: |
@@ -30,17 +27,15 @@ jobs:
           vcpkg install boost boost-system boost-filesystem boost-units boost-test boost-program-options
           vcpkg integrate install
 
-      - name: Prepare sln File
+      - name: Configure Solidity
         run: |
-          mkdir build
+          mkdir build -Force
           cd build
           cmake -G "Visual Studio 17 2022" -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded -DCMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake ..
 
       - name: Build Solidity
         run: |
-          msbuild solidity.sln /p:Configuration=Release /m:12 /v:minimal
-          cmake --build . --target install --config Release -j 12
-          cd ..
+          cmake --build . --config Release -j 12
 
       - name: Upload Artifact 
         uses: actions/upload-artifact@v3
