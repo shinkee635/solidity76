@@ -17,14 +17,16 @@ if ( -not (Test-Path $INSTALL_PATH) ) {
 
   Invoke-WebRequest -URI "https://boostorg.jfrog.io/artifactory/main/release/${BUILD_VER}/source/boost_${BUILD_VERSION}.7z" -OutFile boost_${BUILD_VERSION}.7z
   Invoke-WebRequest -URI "https://boostorg.jfrog.io/artifactory/main/release/${NEWER_VER}/source/boost_${NEWER_VERSION}.7z" -OutFile boost_${NEWER_VERSION}.7z
+  
+  7z x boost_${BUILD_VERSION}.7z -o".\" -y
+  7z x boost_${NEWER_VERSION}.7z -o".\" -y
+
   Copy-Item -Path "boost_${NEWER_VERSION}\bootstrap.bat" -Destination "boost_${BUILD_VERSION}\bootstrap.bat"
   Copy-Item -Path "${NEWER_FILE_PATH}\engine\build.bat" -Destination "${BUILD_FILE_PATH}\engine\build.bat"
   Copy-Item -Path "${NEWER_FILE_PATH}\engine\config_toolset.bat" -Destination "${BUILD_FILE_PATH}\engine\config_toolset.bat"
   Copy-Item -Path "${NEWER_FILE_PATH}\engine\guess_toolset.bat" -Destination "${BUILD_FILE_PATH}\engine\guess_toolset.bat"
   Copy-Item -Path "${NEWER_FILE_PATH}\engine\vswhere_usability_wrapper.cmd" -Destination "${BUILD_FILE_PATH}\engine\vswhere_usability_wrapper.cmd"
   Copy-Item -Path "${NEWER_FILE_PATH}\tools\msvc.jam" -Destination "${BUILD_FILE_PATH}\engine\msvc.jam"
-  7z x boost_${BUILD_VERSION}.7z -o".\" -y
-  7z x boost_${NEWER_VERSION}.7z -o".\" -y
   cd boost_${BUILD_VERSION}
   .\bootstrap.bat
   .\b2 -j4 -d0 link=static runtime-link=static variant=release threading=multi address-model=64 --with-filesystem --with-system --with-program_options --with-test --prefix=$INSTALL_PATH install
