@@ -830,7 +830,7 @@ BOOST_AUTO_TEST_CASE(send_ether)
 
 		u256 amount(250);
 		compileAndRun(sourceCode, amount + 1);
-		h160 address(23);
+		h32B address(31);
 		ABI_CHECK(callContractFunction("a(address,uint256)", address, amount), encodeArgs(1));
 		BOOST_CHECK_EQUAL(balanceAt(address), amount);
 	)
@@ -863,11 +863,11 @@ BOOST_AUTO_TEST_CASE(transfer_ether)
 		DISABLE_EWASM_TESTRUN()
 
 		compileAndRun(sourceCode, 0, "B");
-		h160 const nonPayableRecipient = m_contractAddress;
+		h32B const nonPayableRecipient = m_contractAddress;
 		compileAndRun(sourceCode, 0, "C");
-		h160 const oogRecipient = m_contractAddress;
-		compileAndRun(sourceCode, 20, "A");
-		h160 payableRecipient(23);
+		h32B const oogRecipient = m_contractAddress;
+		compileAndRun(sourceCode, 32, "A");
+		h32B payableRecipient(31);
 		ABI_CHECK(callContractFunction("a(address,uint256)", payableRecipient, 10), encodeArgs(10));
 		BOOST_CHECK_EQUAL(balanceAt(payableRecipient), 10);
 		BOOST_CHECK_EQUAL(balanceAt(m_contractAddress), 10);
@@ -1021,7 +1021,7 @@ BOOST_AUTO_TEST_CASE(selfdestruct)
 		}
 	)";
 	u256 amount(130);
-	h160 address(23);
+	h32B address(31);
 	ALSO_VIA_YUL(
 		DISABLE_EWASM_TESTRUN()
 
@@ -1250,7 +1250,7 @@ BOOST_AUTO_TEST_CASE(inter_contract_calls)
 		}
 	)";
 	compileAndRun(sourceCode, 0, "Helper");
-	h160 const c_helperAddress = m_contractAddress;
+	h32B const c_helperAddress = m_contractAddress;
 	compileAndRun(sourceCode, 0, "Main");
 	BOOST_REQUIRE(callContractFunction("setHelper(address)", c_helperAddress) == bytes());
 	BOOST_REQUIRE(callContractFunction("getHelper()", c_helperAddress) == encodeArgs(c_helperAddress));
@@ -1281,7 +1281,7 @@ BOOST_AUTO_TEST_CASE(inter_contract_calls_with_complex_parameters)
 		}
 	)";
 	compileAndRun(sourceCode, 0, "Helper");
-	h160 const c_helperAddress = m_contractAddress;
+	h32B const c_helperAddress = m_contractAddress;
 	compileAndRun(sourceCode, 0, "Main");
 	BOOST_REQUIRE(callContractFunction("setHelper(address)", c_helperAddress) == bytes());
 	BOOST_REQUIRE(callContractFunction("getHelper()", c_helperAddress) == encodeArgs(c_helperAddress));
@@ -1313,7 +1313,7 @@ BOOST_AUTO_TEST_CASE(inter_contract_calls_accessing_this)
 		}
 	)";
 	compileAndRun(sourceCode, 0, "Helper");
-	h160 const c_helperAddress = m_contractAddress;
+	h32B const c_helperAddress = m_contractAddress;
 	compileAndRun(sourceCode, 0, "Main");
 	BOOST_REQUIRE(callContractFunction("setHelper(address)", c_helperAddress) == bytes());
 	BOOST_REQUIRE(callContractFunction("getHelper()", c_helperAddress) == encodeArgs(c_helperAddress));
@@ -1345,7 +1345,7 @@ BOOST_AUTO_TEST_CASE(calls_to_this)
 		}
 	)";
 	compileAndRun(sourceCode, 0, "Helper");
-	h160 const c_helperAddress = m_contractAddress;
+	h32B const c_helperAddress = m_contractAddress;
 	compileAndRun(sourceCode, 0, "Main");
 	BOOST_REQUIRE(callContractFunction("setHelper(address)", c_helperAddress) == bytes());
 	BOOST_REQUIRE(callContractFunction("getHelper()", c_helperAddress) == encodeArgs(c_helperAddress));
@@ -1380,7 +1380,7 @@ BOOST_AUTO_TEST_CASE(inter_contract_calls_with_local_vars)
 		}
 	)";
 	compileAndRun(sourceCode, 0, "Helper");
-	h160 const c_helperAddress = m_contractAddress;
+	h32B const c_helperAddress = m_contractAddress;
 	compileAndRun(sourceCode, 0, "Main");
 	BOOST_REQUIRE(callContractFunction("setHelper(address)", c_helperAddress) == bytes());
 	BOOST_REQUIRE(callContractFunction("getHelper()", c_helperAddress) == encodeArgs(c_helperAddress));
@@ -1411,7 +1411,7 @@ BOOST_AUTO_TEST_CASE(fixed_bytes_in_calls)
 		}
 	)";
 	compileAndRun(sourceCode, 0, "Helper");
-	h160 const c_helperAddress = m_contractAddress;
+	h32B const c_helperAddress = m_contractAddress;
 	compileAndRun(sourceCode, 0, "Main");
 	BOOST_REQUIRE(callContractFunction("setHelper(address)", c_helperAddress) == bytes());
 	BOOST_REQUIRE(callContractFunction("getHelper()", c_helperAddress) == encodeArgs(c_helperAddress));
@@ -1674,7 +1674,7 @@ BOOST_AUTO_TEST_CASE(events_with_same_name)
 			}
 		}
 	)";
-	h160 const c_loggedAddress = m_contractAddress;
+	h32B const c_loggedAddress = m_contractAddress;
 
 	ALSO_VIA_YUL(
 		DISABLE_EWASM_TESTRUN()
@@ -1737,7 +1737,7 @@ BOOST_AUTO_TEST_CASE(events_with_same_name_inherited_emit)
 			}
 		}
 	)";
-	h160 const c_loggedAddress = m_contractAddress;
+	h32B const c_loggedAddress = m_contractAddress;
 
 	ALSO_VIA_YUL(
 		DISABLE_EWASM_TESTRUN()
@@ -2224,7 +2224,7 @@ BOOST_AUTO_TEST_CASE(generic_call)
 			}
 	)**";
 	compileAndRun(sourceCode, 0, "receiver");
-	h160 const c_receiverAddress = m_contractAddress;
+	h32B const c_receiverAddress = m_contractAddress;
 	compileAndRun(sourceCode, 50, "sender");
 	BOOST_REQUIRE(callContractFunction("doSend(address)", c_receiverAddress) == encodeArgs(23));
 	BOOST_CHECK_EQUAL(balanceAt(m_contractAddress), 50 - 2);
@@ -2259,9 +2259,9 @@ BOOST_AUTO_TEST_CASE(generic_delegatecall)
 		string source = "pragma abicoder " + string(v2 ? "v2" : "v1") + ";\n" + string(sourceCode);
 
 		compileAndRun(source, 0, "Receiver");
-		h160 const c_receiverAddress = m_contractAddress;
+		h32B const c_receiverAddress = m_contractAddress;
 		compileAndRun(source, 50, "Sender");
-		h160 const c_senderAddress = m_contractAddress;
+		h32B const c_senderAddress = m_contractAddress;
 		BOOST_CHECK(m_sender != c_senderAddress); // just for sanity
 		ABI_CHECK(callContractFunctionWithValue("doSend(address)", 11, c_receiverAddress), encodeArgs());
 		ABI_CHECK(callContractFunction("received()"), encodeArgs(u256(23)));
@@ -2311,7 +2311,7 @@ BOOST_AUTO_TEST_CASE(generic_staticcall)
 				}
 		)**";
 		compileAndRun(sourceCode, 0, "A");
-		h160 const c_addressA = m_contractAddress;
+		h32B const c_addressA = m_contractAddress;
 		compileAndRun(sourceCode, 0, "C");
 		ABI_CHECK(callContractFunction("f(address)", c_addressA), encodeArgs(true, 0x40, 0x20, 23));
 		ABI_CHECK(callContractFunction("g(address)", c_addressA), encodeArgs(true, 0x40, 0x20, 23 + 42));
@@ -2333,7 +2333,7 @@ BOOST_AUTO_TEST_CASE(library_call_in_homestead)
 		}
 	)";
 	compileAndRun(sourceCode, 0, "Lib");
-	compileAndRun(sourceCode, 0, "Test", bytes(), map<string, h160>{{"Lib", m_contractAddress}});
+	compileAndRun(sourceCode, 0, "Test", bytes(), map<string, h32B>{{"Lib", m_contractAddress}});
 	ABI_CHECK(callContractFunction("f()"), encodeArgs());
 	ABI_CHECK(callContractFunction("sender()"), encodeArgs(m_sender));
 }
@@ -2363,7 +2363,7 @@ BOOST_AUTO_TEST_CASE(library_call_protection)
 	ABI_CHECK(callContractFunction("np(Lib.S storage)", 0), encodeArgs());
 	ABI_CHECK(callContractFunction("v(Lib.S storage)", 0), encodeArgs(m_sender));
 	ABI_CHECK(callContractFunction("pu()"), encodeArgs(2));
-	compileAndRun(sourceCode, 0, "Test", bytes(), map<string, h160>{{"Lib", m_contractAddress}});
+	compileAndRun(sourceCode, 0, "Test", bytes(), map<string, h32B>{{"Lib", m_contractAddress}});
 	ABI_CHECK(callContractFunction("s()"), encodeArgs(0));
 	ABI_CHECK(callContractFunction("np()"), encodeArgs(m_sender));
 	ABI_CHECK(callContractFunction("s()"), encodeArgs(3));
@@ -2391,7 +2391,7 @@ BOOST_AUTO_TEST_CASE(library_staticcall_delegatecall)
 		 }
 	)";
 	compileAndRun(sourceCode, 0, "Lib");
-	compileAndRun(sourceCode, 0, "Test", bytes(), map<string, h160>{{"Lib", m_contractAddress}});
+	compileAndRun(sourceCode, 0, "Test", bytes(), map<string, h32B>{{"Lib", m_contractAddress}});
 	ABI_CHECK(callContractFunction("f()"), encodeArgs(1));
 }
 
@@ -2633,7 +2633,7 @@ BOOST_AUTO_TEST_CASE(struct_referencing)
 	compileAndRun(sourceCode, 0, "L");
 	ABI_CHECK(callContractFunction("f()"), encodeArgs(0, 3));
 	ABI_CHECK(callContractFunction("g()"), encodeArgs(4));
-	compileAndRun(sourceCode, 0, "C", bytes(), map<string, h160>{ {"L", m_contractAddress}});
+	compileAndRun(sourceCode, 0, "C", bytes(), map<string, h32B>{ {"L", m_contractAddress}});
 	ABI_CHECK(callContractFunction("f()"), encodeArgs(1));
 	ABI_CHECK(callContractFunction("g()"), encodeArgs(2));
 	ABI_CHECK(callContractFunction("h()"), encodeArgs(0, 5));
@@ -2679,7 +2679,7 @@ BOOST_AUTO_TEST_CASE(enum_referencing)
 	compileAndRun(sourceCode, 0, "L");
 	ABI_CHECK(callContractFunction("f()"), encodeArgs(1));
 	ABI_CHECK(callContractFunction("g()"), encodeArgs(3));
-	compileAndRun(sourceCode, 0, "C", bytes(), map<string, h160>{{"L", m_contractAddress}});
+	compileAndRun(sourceCode, 0, "C", bytes(), map<string, h32B>{{"L", m_contractAddress}});
 	ABI_CHECK(callContractFunction("f()"), encodeArgs(3));
 	ABI_CHECK(callContractFunction("g()"), encodeArgs(3));
 	ABI_CHECK(callContractFunction("h()"), encodeArgs(1));
@@ -2906,7 +2906,7 @@ BOOST_AUTO_TEST_CASE(failing_send)
 		}
 	)";
 	compileAndRun(sourceCode, 0, "Helper");
-	h160 const c_helperAddress = m_contractAddress;
+	h32B const c_helperAddress = m_contractAddress;
 	compileAndRun(sourceCode, 20, "Main");
 	BOOST_REQUIRE(callContractFunction("callHelper(address)", c_helperAddress) == encodeArgs(true, 20));
 }
@@ -3511,7 +3511,7 @@ BOOST_AUTO_TEST_CASE(library_call)
 		}
 	)";
 	compileAndRun(sourceCode, 0, "Lib");
-	compileAndRun(sourceCode, 0, "Test", bytes(), map<string, h160>{{"Lib", m_contractAddress}});
+	compileAndRun(sourceCode, 0, "Test", bytes(), map<string, h32B>{{"Lib", m_contractAddress}});
 	ABI_CHECK(callContractFunction("f(uint256)", u256(33)), encodeArgs(u256(33) * 9));
 }
 
@@ -3526,7 +3526,7 @@ BOOST_AUTO_TEST_CASE(library_function_external)
 		}
 	)";
 	compileAndRun(sourceCode, 0, "Lib");
-	compileAndRun(sourceCode, 0, "Test", bytes(), map<string, h160>{{"Lib", m_contractAddress}});
+	compileAndRun(sourceCode, 0, "Test", bytes(), map<string, h32B>{{"Lib", m_contractAddress}});
 	ABI_CHECK(callContractFunction("f(bytes)", u256(0x20), u256(5), "abcde"), encodeArgs("c"));
 }
 
@@ -3543,7 +3543,7 @@ BOOST_AUTO_TEST_CASE(library_stray_values)
 		}
 	)";
 	compileAndRun(sourceCode, 0, "Lib");
-	compileAndRun(sourceCode, 0, "Test", bytes(), map<string, h160>{{"Lib", m_contractAddress}});
+	compileAndRun(sourceCode, 0, "Test", bytes(), map<string, h32B>{{"Lib", m_contractAddress}});
 	ABI_CHECK(callContractFunction("f(uint256)", u256(33)), encodeArgs(u256(42)));
 }
 
@@ -3573,7 +3573,7 @@ BOOST_AUTO_TEST_CASE(internal_types_in_library)
 		}
 	)";
 	compileAndRun(sourceCode, 0, "Lib");
-	compileAndRun(sourceCode, 0, "Test", bytes(), map<string, h160>{{"Lib", m_contractAddress}});
+	compileAndRun(sourceCode, 0, "Test", bytes(), map<string, h32B>{{"Lib", m_contractAddress}});
 	ABI_CHECK(callContractFunction("f()"), encodeArgs(u256(4), u256(17)));
 }
 
@@ -3604,7 +3604,7 @@ BOOST_AUTO_TEST_CASE(mapping_arguments_in_library)
 		}
 	)";
 	compileAndRun(sourceCode, 0, "Lib");
-	compileAndRun(sourceCode, 0, "Test", bytes(), map<string, h160>{{"Lib", m_contractAddress}});
+	compileAndRun(sourceCode, 0, "Test", bytes(), map<string, h32B>{{"Lib", m_contractAddress}});
 	ABI_CHECK(callContractFunction("set(uint256,uint256)", u256(1), u256(42)), encodeArgs(u256(0)));
 	ABI_CHECK(callContractFunction("set(uint256,uint256)", u256(2), u256(84)), encodeArgs(u256(0)));
 	ABI_CHECK(callContractFunction("set(uint256,uint256)", u256(21), u256(7)), encodeArgs(u256(0)));
@@ -3652,7 +3652,7 @@ BOOST_AUTO_TEST_CASE(mapping_returns_in_library)
 		}
 	)";
 	compileAndRun(sourceCode, 0, "Lib");
-	compileAndRun(sourceCode, 0, "Test", bytes(), map<string, h160>{{"Lib", m_contractAddress}});
+	compileAndRun(sourceCode, 0, "Test", bytes(), map<string, h32B>{{"Lib", m_contractAddress}});
 	ABI_CHECK(callContractFunction("set(bool,uint256,uint256)", true, u256(1), u256(42)), encodeArgs(u256(0)));
 	ABI_CHECK(callContractFunction("set(bool,uint256,uint256)", true, u256(2), u256(84)), encodeArgs(u256(0)));
 	ABI_CHECK(callContractFunction("set(bool,uint256,uint256)", true, u256(21), u256(7)), encodeArgs(u256(0)));
@@ -3728,7 +3728,7 @@ BOOST_AUTO_TEST_CASE(mapping_returns_in_library_named)
 		}
 	)";
 	compileAndRun(sourceCode, 0, "Lib");
-	compileAndRun(sourceCode, 0, "Test", bytes(), map<string, h160>{{"Lib", m_contractAddress}});
+	compileAndRun(sourceCode, 0, "Test", bytes(), map<string, h32B>{{"Lib", m_contractAddress}});
 	ABI_CHECK(callContractFunction("f()"), encodeArgs(u256(0), u256(42), u256(0), u256(0), u256(21), u256(84)));
 	ABI_CHECK(callContractFunction("g()"), encodeArgs(u256(0), u256(42), u256(0), u256(0), u256(21), u256(17)));
 }
@@ -3756,7 +3756,7 @@ BOOST_AUTO_TEST_CASE(using_library_mappings_public)
 			}
 		)";
 	compileAndRun(sourceCode, 0, "Lib");
-	compileAndRun(sourceCode, 0, "Test", bytes(), map<string, h160>{{"Lib", m_contractAddress}});
+	compileAndRun(sourceCode, 0, "Test", bytes(), map<string, h32B>{{"Lib", m_contractAddress}});
 	ABI_CHECK(callContractFunction("f()"), encodeArgs(u256(1), u256(0), u256(42), u256(23), u256(0), u256(99)));
 }
 
@@ -3791,7 +3791,7 @@ BOOST_AUTO_TEST_CASE(using_library_mappings_external)
 	{
 		string prefix = "pragma abicoder " + string(v2 ? "v2" : "v1") + ";\n";
 		compileAndRun(prefix + libSourceCode, 0, "Lib");
-		compileAndRun(prefix + sourceCode, 0, "Test", bytes(), map<string, h160>{{"Lib", m_contractAddress}});
+		compileAndRun(prefix + sourceCode, 0, "Test", bytes(), map<string, h32B>{{"Lib", m_contractAddress}});
 		ABI_CHECK(callContractFunction("f()"), encodeArgs(u256(2), u256(0), u256(84), u256(46), u256(0), u256(198)));
 	}
 }
@@ -3817,7 +3817,7 @@ BOOST_AUTO_TEST_CASE(using_library_mappings_return)
 			}
 		)";
 	compileAndRun(sourceCode, 0, "Lib");
-	compileAndRun(sourceCode, 0, "Test", bytes(), map<string, h160>{{"Lib", m_contractAddress}});
+	compileAndRun(sourceCode, 0, "Test", bytes(), map<string, h32B>{{"Lib", m_contractAddress}});
 	ABI_CHECK(callContractFunction("f()"), encodeArgs(u256(1), u256(0), u256(42), u256(23), u256(0), u256(99)));
 }
 
@@ -3845,7 +3845,7 @@ BOOST_AUTO_TEST_CASE(using_library_structs)
 		}
 	)";
 	compileAndRun(sourceCode, 0, "Lib");
-	compileAndRun(sourceCode, 0, "Test", bytes(), map<string, h160>{{"Lib", m_contractAddress}});
+	compileAndRun(sourceCode, 0, "Test", bytes(), map<string, h32B>{{"Lib", m_contractAddress}});
 	ABI_CHECK(callContractFunction("f()"), encodeArgs(u256(7), u256(8)));
 }
 
@@ -4050,7 +4050,7 @@ BOOST_AUTO_TEST_CASE(using_for_function_on_int)
 		}
 	)";
 	compileAndRun(sourceCode, 0, "D");
-	compileAndRun(sourceCode, 0, "C", bytes(), map<string, h160>{{"D", m_contractAddress}});
+	compileAndRun(sourceCode, 0, "C", bytes(), map<string, h32B>{{"D", m_contractAddress}});
 	ABI_CHECK(callContractFunction("f(uint256)", u256(9)), encodeArgs(u256(2 * 9)));
 }
 
@@ -4068,7 +4068,7 @@ BOOST_AUTO_TEST_CASE(using_for_function_on_struct)
 		}
 	)";
 	compileAndRun(sourceCode, 0, "D");
-	compileAndRun(sourceCode, 0, "C", bytes(), map<string, h160>{{"D", m_contractAddress}});
+	compileAndRun(sourceCode, 0, "C", bytes(), map<string, h32B>{{"D", m_contractAddress}});
 	ABI_CHECK(callContractFunction("f(uint256)", u256(7)), encodeArgs(u256(3 * 7)));
 	ABI_CHECK(callContractFunction("x()"), encodeArgs(u256(3 * 7)));
 }
@@ -4091,7 +4091,7 @@ BOOST_AUTO_TEST_CASE(using_for_overload)
 		}
 	)";
 	compileAndRun(sourceCode, 0, "D");
-	compileAndRun(sourceCode, 0, "C", bytes(), map<string, h160>{{"D", m_contractAddress}});
+	compileAndRun(sourceCode, 0, "C", bytes(), map<string, h32B>{{"D", m_contractAddress}});
 	ABI_CHECK(callContractFunction("f(uint256)", u256(7)), encodeArgs(u256(6 * 7)));
 	ABI_CHECK(callContractFunction("x()"), encodeArgs(u256(6 * 7)));
 }
@@ -4110,7 +4110,7 @@ BOOST_AUTO_TEST_CASE(using_for_by_name)
 		}
 	)";
 	compileAndRun(sourceCode, 0, "D");
-	compileAndRun(sourceCode, 0, "C", bytes(), map<string, h160>{{"D", m_contractAddress}});
+	compileAndRun(sourceCode, 0, "C", bytes(), map<string, h32B>{{"D", m_contractAddress}});
 	ABI_CHECK(callContractFunction("f(uint256)", u256(7)), encodeArgs(u256(6 * 7)));
 	ABI_CHECK(callContractFunction("x()"), encodeArgs(u256(6 * 7)));
 }
@@ -4130,7 +4130,7 @@ BOOST_AUTO_TEST_CASE(bound_function_in_function)
 		}
 	)";
 	compileAndRun(sourceCode, 0, "L");
-	compileAndRun(sourceCode, 0, "C", bytes(), map<string, h160>{{"L", m_contractAddress}});
+	compileAndRun(sourceCode, 0, "C", bytes(), map<string, h32B>{{"L", m_contractAddress}});
 	ABI_CHECK(callContractFunction("f()"), encodeArgs(u256(7)));
 }
 
@@ -4148,7 +4148,7 @@ BOOST_AUTO_TEST_CASE(bound_function_in_var)
 		}
 	)";
 	compileAndRun(sourceCode, 0, "D");
-	compileAndRun(sourceCode, 0, "C", bytes(), map<string, h160>{{"D", m_contractAddress}});
+	compileAndRun(sourceCode, 0, "C", bytes(), map<string, h32B>{{"D", m_contractAddress}});
 	ABI_CHECK(callContractFunction("f(uint256)", u256(7)), encodeArgs(u256(6 * 7)));
 	ABI_CHECK(callContractFunction("x()"), encodeArgs(u256(6 * 7)));
 }
@@ -4171,7 +4171,7 @@ BOOST_AUTO_TEST_CASE(bound_function_to_string)
 		}
 	)";
 	compileAndRun(sourceCode, 0, "D");
-	compileAndRun(sourceCode, 0, "C", bytes(), map<string, h160>{{"D", m_contractAddress}});
+	compileAndRun(sourceCode, 0, "C", bytes(), map<string, h32B>{{"D", m_contractAddress}});
 	ABI_CHECK(callContractFunction("f()"), encodeArgs(u256(3)));
 	ABI_CHECK(callContractFunction("g()"), encodeArgs(u256(3)));
 }
@@ -4323,7 +4323,7 @@ BOOST_AUTO_TEST_CASE(mutex)
 		}
 	)";
 	compileAndRun(sourceCode, 500, "Fund");
-	h160 const fund = m_contractAddress;
+	h32B const fund = m_contractAddress;
 	BOOST_CHECK_EQUAL(balanceAt(fund), 500);
 	compileAndRun(sourceCode, 0, "Attacker", encodeArgs(fund));
 	ABI_CHECK(callContractFunction("setProtected(bool)", true), encodeArgs());
@@ -4369,7 +4369,7 @@ BOOST_AUTO_TEST_CASE(payable_function_calls_library)
 		}
 	)";
 	compileAndRun(sourceCode, 0, "L");
-	compileAndRun(sourceCode, 0, "C", bytes(), map<string, h160>{{"L", m_contractAddress}});
+	compileAndRun(sourceCode, 0, "C", bytes(), map<string, h32B>{{"L", m_contractAddress}});
 	ABI_CHECK(callContractFunctionWithValue("f()", 27), encodeArgs(u256(7)));
 }
 
@@ -4421,7 +4421,7 @@ BOOST_AUTO_TEST_CASE(mem_resize_is_not_paid_at_call)
 	)";
 
 	compileAndRun(sourceCode, 0, "C");
-	h160 const cAddr = m_contractAddress;
+	h32B const cAddr = m_contractAddress;
 	compileAndRun(sourceCode, 0, "D");
 	ABI_CHECK(callContractFunction("f(address)", cAddr), encodeArgs(u256(7)));
 }
@@ -4835,7 +4835,7 @@ BOOST_AUTO_TEST_CASE(interface_contract)
 		}
 	)";
 	compileAndRun(sourceCode, 0, "A");
-	h160 const recipient = m_contractAddress;
+	h32B const recipient = m_contractAddress;
 	compileAndRun(sourceCode, 0, "C");
 	ABI_CHECK(callContractFunction("f(address)", recipient), encodeArgs(true));
 }
@@ -5654,7 +5654,7 @@ BOOST_AUTO_TEST_CASE(event_wrong_abi_name)
 		}
 	)";
 	compileAndRun(sourceCode, 0, "ClientReceipt", bytes());
-	compileAndRun(sourceCode, 0, "Test", bytes(), map<string, h160>{{"ClientReceipt", m_contractAddress}});
+	compileAndRun(sourceCode, 0, "Test", bytes(), map<string, h32B>{{"ClientReceipt", m_contractAddress}});
 
 	callContractFunction("f()");
 	BOOST_REQUIRE_EQUAL(numLogs(), 1);

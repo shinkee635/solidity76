@@ -10,7 +10,7 @@ SolidityCompilationFramework::SolidityCompilationFramework(langutil::EVMVersion 
 solidity::bytes SolidityCompilationFramework::compileContract(
 	std::string const& _sourceCode,
 	std::string const& _contractName,
-	std::map<std::string, solidity::util::h160> const& _libraryAddresses,
+	std::map<std::string, solidity::util::h32B> const& _libraryAddresses,
 	frontend::OptimiserSettings _optimization
 )
 {

@@ -239,27 +239,27 @@ protected:
 		{
 			callString("reserve", _name);
 		}
-		h160 owner(string const& _name)
+		h32B owner(string const& _name)
 		{
 			return callStringReturnsAddress("owner", _name);
 		}
-		void setAddress(string const& _name, h160 const& _address, bool _primary)
+		void setAddress(string const& _name, h32B const& _address, bool _primary)
 		{
 			callStringAddressBool("setAddress", _name, _address, _primary);
 		}
-		h160 addr(string const& _name)
+		h32B addr(string const& _name)
 		{
 			return callStringReturnsAddress("addr", _name);
 		}
-		string name(h160 const& _addr)
+		string name(h32B const& _addr)
 		{
 			return callAddressReturnsString("name", _addr);
 		}
-		void setSubRegistrar(string const& _name, h160 const& _address)
+		void setSubRegistrar(string const& _name, h32B const& _address)
 		{
 			callStringAddress("setSubRegistrar", _name, _address);
 		}
-		h160 subRegistrar(string const& _name)
+		h32B subRegistrar(string const& _name)
 		{
 			return callStringReturnsAddress("subRegistrar", _name);
 		}
@@ -271,7 +271,7 @@ protected:
 		{
 			return callStringReturnsBytes32("content", _name);
 		}
-		void transfer(string const& _name, h160 const& _target)
+		void transfer(string const& _name, h32B const& _target)
 		{
 			return callStringAddress("transfer", _name, _target);
 		}
@@ -304,7 +304,7 @@ BOOST_AUTO_TEST_CASE(reserve)
 
 	// should not work
 	registrar.reserve("");
-	BOOST_CHECK_EQUAL(registrar.owner(""), h160{});
+	BOOST_CHECK_EQUAL(registrar.owner(""), h32B{});
 
 	for (auto const& name: names)
 	{
@@ -339,27 +339,27 @@ BOOST_AUTO_TEST_CASE(properties)
 	for (string const& name: names)
 	{
 		m_sender = account(0);
-		sendEther(account(count), u256(20) * ether);
+		sendEther(account(count), u256(32) * ether);
 		m_sender = account(count);
 		auto sender = m_sender;
 		addr += count;
 		// setting by sender works
 		registrar.reserve(name);
 		BOOST_CHECK_EQUAL(registrar.owner(name), sender);
-		registrar.setAddress(name, h160(addr), true);
-		BOOST_CHECK_EQUAL(registrar.addr(name), h160(addr));
-		registrar.setSubRegistrar(name, h160(addr + 20));
-		BOOST_CHECK_EQUAL(registrar.subRegistrar(name), h160(addr + 20));
+		registrar.setAddress(name, h32B(addr), true);
+		BOOST_CHECK_EQUAL(registrar.addr(name), h32B(addr));
+		registrar.setSubRegistrar(name, h32B(addr + 32));
+		BOOST_CHECK_EQUAL(registrar.subRegistrar(name), h32B(addr + 32));
 		registrar.setContent(name, h256(u256(addr + 90)));
 		BOOST_CHECK_EQUAL(registrar.content(name), h256(u256(addr + 90)));
 
 		// but not by someone else
 		m_sender = account(count - 1);
 		BOOST_CHECK_EQUAL(registrar.owner(name), sender);
-		registrar.setAddress(name, h160(addr + 1), true);
-		BOOST_CHECK_EQUAL(registrar.addr(name), h160(addr));
-		registrar.setSubRegistrar(name, h160(addr + 20 + 1));
-		BOOST_CHECK_EQUAL(registrar.subRegistrar(name), h160(addr + 20));
+		registrar.setAddress(name, h32B(addr + 1), true);
+		BOOST_CHECK_EQUAL(registrar.addr(name), h32B(addr));
+		registrar.setSubRegistrar(name, h32B(addr + 32 + 1));
+		BOOST_CHECK_EQUAL(registrar.subRegistrar(name), h32B(addr + 32));
 		registrar.setContent(name, h256(u256(addr + 90 + 1)));
 		BOOST_CHECK_EQUAL(registrar.content(name), h256(u256(addr + 90)));
 		count++;
@@ -373,8 +373,8 @@ BOOST_AUTO_TEST_CASE(transfer)
 	RegistrarInterface registrar(*this);
 	registrar.reserve(name);
 	registrar.setContent(name, h256(u256(123)));
-	registrar.transfer(name, h160(555));
-	BOOST_CHECK_EQUAL(registrar.owner(name), h160(555));
+	registrar.transfer(name, h32B(555));
+	BOOST_CHECK_EQUAL(registrar.owner(name), h32B(555));
 	BOOST_CHECK_EQUAL(registrar.content(name), h256(u256(123)));
 }
 
@@ -386,9 +386,9 @@ BOOST_AUTO_TEST_CASE(disown)
 	RegistrarInterface registrar(*this);
 	registrar.reserve(name);
 	registrar.setContent(name, h256(u256(123)));
-	registrar.setAddress(name, h160(124), true);
-	registrar.setSubRegistrar(name, h160(125));
-	BOOST_CHECK_EQUAL(registrar.name(h160(124)), name);
+	registrar.setAddress(name, h32B(124), true);
+	registrar.setSubRegistrar(name, h32B(125));
+	BOOST_CHECK_EQUAL(registrar.name(h32B(124)), name);
 
 	// someone else tries disowning
 	sendEther(account(1), u256(10) * ether);
@@ -398,11 +398,11 @@ BOOST_AUTO_TEST_CASE(disown)
 
 	m_sender = account(0);
 	registrar.disown(name);
-	BOOST_CHECK_EQUAL(registrar.owner(name), h160());
-	BOOST_CHECK_EQUAL(registrar.addr(name), h160());
-	BOOST_CHECK_EQUAL(registrar.subRegistrar(name), h160());
+	BOOST_CHECK_EQUAL(registrar.owner(name), h32B());
+	BOOST_CHECK_EQUAL(registrar.addr(name), h32B());
+	BOOST_CHECK_EQUAL(registrar.subRegistrar(name), h32B());
 	BOOST_CHECK_EQUAL(registrar.content(name), h256());
-	BOOST_CHECK_EQUAL(registrar.name(h160(124)), "");
+	BOOST_CHECK_EQUAL(registrar.name(h32B(124)), "");
 }
 
 BOOST_AUTO_TEST_CASE(auction_simple)
@@ -414,7 +414,7 @@ BOOST_AUTO_TEST_CASE(auction_simple)
 	// initiate auction
 	registrar.setNextValue(8);
 	registrar.reserve(name);
-	BOOST_CHECK_EQUAL(registrar.owner(name), h160());
+	BOOST_CHECK_EQUAL(registrar.owner(name), h32B());
 	// "wait" until auction end
 
 	m_evmcHost->tx_context.block_timestamp += m_biddingTime + 10;
@@ -435,7 +435,7 @@ BOOST_AUTO_TEST_CASE(auction_bidding)
 	// initiate auction
 	registrar.setNextValue(8);
 	registrar.reserve(name);
-	BOOST_CHECK_EQUAL(registrar.owner(name), h160());
+	BOOST_CHECK_EQUAL(registrar.owner(name), h32B());
 	// overbid self
 	m_evmcHost->tx_context.block_timestamp = startTime + m_biddingTime - 10;
 	registrar.setNextValue(12);
@@ -446,7 +446,7 @@ BOOST_AUTO_TEST_CASE(auction_bidding)
 	m_evmcHost->tx_context.block_timestamp = startTime + 2 * m_biddingTime - 50;
 	registrar.setNextValue(13);
 	registrar.reserve(name);
-	BOOST_CHECK_EQUAL(registrar.owner(name), h160());
+	BOOST_CHECK_EQUAL(registrar.owner(name), h32B());
 	// end auction by first bidder (which is not highest) trying to overbid again (too late)
 	m_sender = account(0);
 	m_evmcHost->tx_context.block_timestamp = startTime + 4 * m_biddingTime;

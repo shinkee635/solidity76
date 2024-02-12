@@ -446,7 +446,7 @@ BoolResult AddressType::isExplicitlyConvertibleTo(Type const& _convertTo) const
 		return (m_stateMutability >= StateMutability::Payable) || !contractType->isPayable();
 	return isImplicitlyConvertibleTo(_convertTo) ||
 		_convertTo.category() == Category::Integer ||
-		(_convertTo.category() == Category::FixedBytes && 160 == dynamic_cast<FixedBytesType const&>(_convertTo).numBytes() * 8);
+		(_convertTo.category() == Category::FixedBytes && 256 == dynamic_cast<FixedBytesType const&>(_convertTo).numBytes() * 8);
 }
 
 string AddressType::toString(bool) const
@@ -1432,7 +1432,7 @@ BoolResult FixedBytesType::isImplicitlyConvertibleTo(Type const& _convertTo) con
 BoolResult FixedBytesType::isExplicitlyConvertibleTo(Type const& _convertTo) const
 {
 	return (_convertTo.category() == Category::Integer && numBytes() * 8 == dynamic_cast<IntegerType const&>(_convertTo).numBits()) ||
-		(_convertTo.category() == Category::Address && numBytes() == 20) ||
+		(_convertTo.category() == Category::Address && numBytes() == 32) ||
 		_convertTo.category() == Category::FixedPoint ||
 		_convertTo.category() == category();
 }

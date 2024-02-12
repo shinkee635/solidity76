@@ -820,7 +820,7 @@ bool Literal::looksLikeAddress() const
 	if (!isHexNumber())
 		return false;
 
-	return abs(int(valueWithoutUnderscores().length()) - 42) <= 1;
+	return abs(int(valueWithoutUnderscores().length()) - 66) <= 1;
 }
 
 bool Literal::passesAddressChecksum() const
@@ -834,9 +834,9 @@ string Literal::getChecksummedAddress() const
 	solAssert(isHexNumber(), "Expected hex number");
 	/// Pad literal to be a proper hex address.
 	string address = valueWithoutUnderscores().substr(2);
-	if (address.length() > 40)
+	if (address.length() > 64)
 		return string();
-	address.insert(address.begin(), 40 - address.size(), '0');
+	address.insert(address.begin(), 64 - address.size(), '0');
 	return util::getChecksummedAddress(address);
 }
 

@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_CASE(value_types)
 		compileAndRun(sourceCode);
 		callContractFunction("f()");
 		REQUIRE_LOG_DATA(encodeArgs(
-			10, u256(65534), u256(0x121212), u256(-1), string("\x1b\xab\xab"), true, h160("fffffffffffffffffffffffffffffffffffffffb")
+			10, u256(65534), u256(0x121212), u256(-1), string("\x1b\xab\xab"), true, h32B("fffffffffffffffffffffffffffffffffffffffb")
 		));
 	)
 }
@@ -274,9 +274,9 @@ BOOST_AUTO_TEST_CASE(storage_array)
 		compileAndRun(sourceCode);
 		callContractFunction("f()");
 		REQUIRE_LOG_DATA(encodeArgs(
-			h160("ffffffffffffffffffffffffffffffffffffffff"),
-			h160("fffffffffffffffffffffffffffffffffffffffe"),
-			h160("fffffffffffffffffffffffffffffffffffffffd")
+			h32B("ffffffffffffffffffffffffffffffffffffffff"),
+			h32B("fffffffffffffffffffffffffffffffffffffffe"),
+			h32B("fffffffffffffffffffffffffffffffffffffffd")
 		));
 	)
 }
@@ -301,9 +301,9 @@ BOOST_AUTO_TEST_CASE(storage_array_dyn)
 		REQUIRE_LOG_DATA(encodeArgs(
 			0x20,
 			3,
-			h160("0000000000000000000000000000000000000001"),
-			h160("0000000000000000000000000000000000000002"),
-			h160("0000000000000000000000000000000000000003")
+			h32B("0000000000000000000000000000000000000001"),
+			h32B("0000000000000000000000000000000000000002"),
+			h32B("0000000000000000000000000000000000000003")
 		));
 	)
 }

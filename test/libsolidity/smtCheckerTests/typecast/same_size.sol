@@ -17,12 +17,12 @@ contract C {
 		assert(t == 200);
 		int256 v = int256(bytes32(uint256(2**255 + 10)));
 		assert(v == -(2**255) + 10);
-		int160 a = int160(address(-1));
+		int256 a = int256(address(-1));
 		assert(a == -1);
-		int160 b = int160(address(2**159 + 10));
+		int256 b = int256(address(2**255 + 10));
 		assert(b == -(2**159) + 10);
 		D d;
-		int160 e = int160(address(d));
+		int256 e = int256(address(d));
 		assert(e == 0);
 	}
 
@@ -43,12 +43,12 @@ contract C {
 		bytes4 b = bytes4(uint32(-2));
 		assert(uint32(b) == uint32(2**32 - 2));
 		address a = address(-1);
-		assert(uint160(a) == uint160(2**160 - 1));
+		assert(uint256(a) == uint256(2**256 - 1));
 		address c = address(0);
-		assert(uint160(c) == 0);
+		assert(uint256(c) == 0);
 		D d;
 		address e = address(d);
-		assert(uint160(e) == 0);
+		assert(uint256(e) == 0);
 		E f = E(1);
 		assert(uint(f) == 1);
 	}
@@ -58,7 +58,7 @@ contract C {
 		uint8 x = uint8(bytes1(uint8(100)));
 		assert(x == 100);
 		address a = address(0);
-		assert(a == address(uint160(0)));
+		assert(a == address(uint256(0)));
 		D d;
 		assert(a == address(d));
 	}

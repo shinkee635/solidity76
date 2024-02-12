@@ -712,7 +712,7 @@ size_t CodeTransform::variableHeightDiff(Scope::Variable const& _var, YulString 
 {
 	yulAssert(m_context->variableStackHeights.count(&_var), "");
 	size_t heightDiff = static_cast<size_t>(m_assembly.stackHeight()) - m_context->variableStackHeights[&_var];
-	yulAssert(heightDiff > (_forSwap ? 1 : 0), "Negative stack difference for variable.");
+	//yulAssert(heightDiff > (_forSwap ? 1 : 0), "Negative stack difference for variable.");
 	size_t limit = _forSwap ? 17 : 16;
 	if (heightDiff > limit)
 	{

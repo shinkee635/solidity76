@@ -14,7 +14,7 @@ contract C {
 
     function g() public pure returns (address payable r) {
         bytes21 x = 0x1122334455667788990011223344556677889900ff;
-        bytes20 y;
+        bytes32 y;
         assembly {
             y := x
         }

@@ -661,9 +661,9 @@ LinkerObject const& Assembly::assemble() const
 			break;
 		}
 		case PushLibraryAddress:
-			ret.bytecode.push_back(static_cast<uint8_t>(Instruction::PUSH20));
+			ret.bytecode.push_back(static_cast<uint8_t>(Instruction::PUSH32));
 			ret.linkReferences[ret.bytecode.size()] = m_libraries.at(i.data());
-			ret.bytecode.resize(ret.bytecode.size() + 20);
+			ret.bytecode.resize(ret.bytecode.size() + 32);
 			break;
 		case PushImmutable:
 			ret.bytecode.push_back(static_cast<uint8_t>(Instruction::PUSH32));
@@ -685,8 +685,8 @@ LinkerObject const& Assembly::assemble() const
 			ret.bytecode.push_back(static_cast<uint8_t>(Instruction::POP));
 			break;
 		case PushDeployTimeAddress:
-			ret.bytecode.push_back(static_cast<uint8_t>(Instruction::PUSH20));
-			ret.bytecode.resize(ret.bytecode.size() + 20);
+			ret.bytecode.push_back(static_cast<uint8_t>(Instruction::PUSH32));
+			ret.bytecode.resize(ret.bytecode.size() + 32);
 			break;
 		case Tag:
 			assertThrow(i.data() != 0, AssemblyException, "Invalid tag position.");

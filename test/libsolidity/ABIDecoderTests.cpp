@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE(value_types)
 		ABI_CHECK(callContractFunction(
 			"f(uint256,uint16,uint24,int24,bytes3,bool,address)",
 			1, 2, 3, 4, string("abc"), true, m_contractAddress
-		), encodeArgs(u256(20)));
+		), encodeArgs(u256(32)));
 	)
 }
 

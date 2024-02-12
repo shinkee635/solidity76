@@ -64,11 +64,11 @@ typedef struct evmc_bytes32
  */
 typedef struct evmc_bytes32 evmc_uint256be;
 
-/** Big-endian 160-bit hash suitable for keeping an Ethereum address. */
+/** Big-endian 256-bit hash suitable for keeping an Ethereum address. */
 typedef struct evmc_address
 {
-    /** The 20 bytes of the hash. */
-    uint8_t bytes[20];
+    /** The 32 bytes of the hash. */
+    uint8_t bytes[32];
 } evmc_address;
 
 /** The kind of call-like instruction. */

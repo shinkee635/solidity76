@@ -123,9 +123,9 @@ smtutil::Expression SymbolicState::txMember(string const& _member) const
 
 smtutil::Expression SymbolicState::txConstraints(FunctionDefinition const& _function) const
 {
-	smtutil::Expression conj = smt::symbolicUnknownConstraints(m_tx.member("block.coinbase"), TypeProvider::uint(160)) &&
-		smt::symbolicUnknownConstraints(m_tx.member("msg.sender"), TypeProvider::uint(160)) &&
-		smt::symbolicUnknownConstraints(m_tx.member("tx.origin"), TypeProvider::uint(160));
+	smtutil::Expression conj = smt::symbolicUnknownConstraints(m_tx.member("block.coinbase"), TypeProvider::uint(256)) &&
+		smt::symbolicUnknownConstraints(m_tx.member("msg.sender"), TypeProvider::uint(256)) &&
+		smt::symbolicUnknownConstraints(m_tx.member("tx.origin"), TypeProvider::uint(256));
 
 	if (_function.isPartOfExternalInterface())
 	{

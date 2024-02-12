@@ -15,7 +15,7 @@
 /// @ingroup cpp
 namespace evmc
 {
-/// The big-endian 160-bit hash suitable for keeping an Ethereum address.
+/// The big-endian 256-bit hash suitable for keeping an Ethereum address.
 ///
 /// This type wraps C ::evmc_address to make sure objects of this type are always initialized.
 struct address : evmc_address
@@ -27,7 +27,7 @@ struct address : evmc_address
 
     /// Converting constructor from unsigned integer value.
     ///
-    /// This constructor assigns the @p v value to the last 8 bytes [12:19]
+    /// This constructor assigns the @p v value to the last 8 bytes
     /// in big-endian order.
     constexpr explicit address(uint64_t v) noexcept
       : evmc_address{{0,
@@ -38,6 +38,18 @@ struct address : evmc_address
                       0,
                       0,
                       0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,					  
                       0,
                       0,
                       0,

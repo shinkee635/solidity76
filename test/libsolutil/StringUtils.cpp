@@ -125,8 +125,8 @@ BOOST_AUTO_TEST_CASE(test_format_number_readable)
 	BOOST_CHECK_EQUAL(formatNumberReadable(u256(0x100000000)), "2**32");
 	BOOST_CHECK_EQUAL(formatNumberReadable(u256(0xFFFFffff)), "2**32 - 1");
 
-	u160 a = 0;
-	for (int i = 0; i < 20; i++)
+	u256 a = 0;
+	for (int i = 0; i < 32; i++)
 	{
 		a <<= 8;
 		a |= 0x55;
