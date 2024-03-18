@@ -90,7 +90,7 @@ object "C_56" {
             function convert_t_stringliteral_6490_to_t_string() -> converted
             {
                 let memPtr := mload(64)
-                let newFreePtr := add(memPtr, 256)
+                let newFreePtr := add(memPtr, 160)
                 if or(gt(newFreePtr, 0xffffffffffffffff), lt(newFreePtr, memPtr)) { invalid() }
                 mstore(64, newFreePtr)
                 converted := memPtr
