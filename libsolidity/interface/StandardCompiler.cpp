@@ -340,7 +340,7 @@ Json::Value formatLinkReferences(std::map<size_t, std::string> const& linkRefere
 
 		Json::Value entry = Json::objectValue;
 		entry["start"] = Json::UInt(ref.first);
-		entry["length"] = 20;
+		entry["length"] = 32;
 
 		libraryArray.append(entry);
 		fileObject[name] = libraryArray;
