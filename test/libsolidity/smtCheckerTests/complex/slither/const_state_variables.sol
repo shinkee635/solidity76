@@ -3,8 +3,8 @@ pragma experimental SMTChecker;
 
 contract A {
 
-    address constant public MY_ADDRESS = 0xE0f5206BBD039e7b0592d8918820024e2a7437b9;
-    address public myFriendsAddress = 0xc0ffee254729296a45a3885639AC7E10F9d54979;
+    address constant public MY_ADDRESS = 0xE0f5206BBD039e7b0592d8918820024e2a7437b9123456789012345678901234;
+    address public myFriendsAddress = 0xc0ffee254729296a45a3885639AC7E10F9d54979123456789012345678901234;
 
     uint public used;
     uint public test = 5;
@@ -23,7 +23,7 @@ contract A {
 
 contract B is A {
 
-    address public mySistersAddress = 0x999999cf1046e68e36E1aA2E0E07105eDDD1f08E;
+    address public mySistersAddress = 0x999999cf1046e68e36E1aA2E0E07105eDDD1f08E123456789012345678901234;
 
     fallback () external {
         used = 0;
