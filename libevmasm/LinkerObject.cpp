@@ -54,8 +54,8 @@ string LinkerObject::toHex() const
 	{
 		size_t pos = ref.first * 2;
 		string hash = libraryPlaceholder(ref.second);
-		hex[pos] = hex[pos + 1] = hex[pos + 38] = hex[pos + 39] = '_';
-		for (size_t i = 0; i < 36; ++i)
+		hex[pos] = hex[pos + 1] = hex[pos + 62] = hex[pos + 63] = '_';
+		for (size_t i = 0; i < 60; ++i)
 			hex[pos + 2 + i] = hash.at(i);
 	}
 	return hex;
@@ -63,7 +63,7 @@ string LinkerObject::toHex() const
 
 string LinkerObject::libraryPlaceholder(string const& _libraryName)
 {
-	return "$" + keccak256(_libraryName).hex().substr(0, 34) + "$";
+	return "$" + keccak256(_libraryName).hex().substr(0, 58) + "$";
 }
 
 h32B const*
