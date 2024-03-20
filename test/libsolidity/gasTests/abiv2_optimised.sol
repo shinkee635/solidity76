@@ -17,9 +17,9 @@ contract C {
 // optimize-yul: true
 // ----
 // creation:
-//   codeDepositCost: 578200
-//   executionCost: 613
-//   totalCost: 578813
+//   codeDepositCost: 563800
+//   executionCost: 600
+//   totalCost: 564400
 // external:
 //   a(): 1029
 //   b(uint256): 2084
