@@ -53,6 +53,6 @@ contract MyConc{
 // ====
 // SMTIgnoreCex: yes
 // ----
-// Warning 2519: (773-792): This declaration shadows an existing declaration.
-// Warning 2018: (1009-1086): Function state mutability can be restricted to view
-// Warning 4984: (985-1002): CHC: Overflow (resulting value larger than 2**256 - 1) happens here.
+// Warning 2519: (845-864): This declaration shadows an existing declaration.
+// Warning 2018: (1081-1158): Function state mutability can be restricted to view
+// Warning 4984: (1057-1074): CHC: Overflow (resulting value larger than 2**256 - 1) happens here.
