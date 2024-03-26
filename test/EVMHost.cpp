@@ -125,9 +125,9 @@ EVMHost::EVMHost(langutil::EVMVersion _evmVersion, evmc::VM& _vm):
 
 	tx_context.block_difficulty = evmc::uint256be{200000000};
 	tx_context.block_gas_limit = 20000000;
-	tx_context.block_coinbase = 0x7878787878787878787878787878787878787878_address;
+	tx_context.block_coinbase = 0x7878787878787878787878787878787878787878787878787878787878787878_address;
 	tx_context.tx_gas_price = evmc::uint256be{3000000000};
-	tx_context.tx_origin = 0x9292929292929292929292929292929292929292_address;
+	tx_context.tx_origin = 0x9292929292929292929292929292929292929292929292929292929292929292_address;
 	// Mainnet according to EIP-155
 	tx_context.chain_id = evmc::uint256be{1};
 
@@ -166,21 +166,29 @@ void EVMHost::selfdestruct(const evmc::address& _addr, const evmc::address& _ben
 
 evmc::result EVMHost::call(evmc_message const& _message) noexcept
 {
-	if (_message.destination == 0x0000000000000000000000000000000000000001_address)
+	if (_message.destination == 0x0000000000000000000000000000000000000000000000000000000000000001_address)
 		return precompileECRecover(_message);
-	else if (_message.destination == 0x0000000000000000000000000000000000000002_address)
+	else if (_message.destination == 0x0000000000000000000000000000000000000000000000000000000000000002_address)
 		return precompileSha256(_message);
-	else if (_message.destination == 0x0000000000000000000000000000000000000003_address)
+	else if (_message.destination == 0x0000000000000000000000000000000000000000000000000000000000000003_address)
 		return precompileRipeMD160(_message);
-	else if (_message.destination == 0x0000000000000000000000000000000000000004_address)
+	else if (_message.destination == 0x0000000000000000000000000000000000000000000000000000000000000004_address)
 		return precompileIdentity(_message);
-	else if (_message.destination == 0x0000000000000000000000000000000000000005_address && m_evmVersion >= langutil::EVMVersion::byzantium())
+	else if (
+		_message.destination == 0x0000000000000000000000000000000000000000000000000000000000000005_address
+		&& m_evmVersion >= langutil::EVMVersion::byzantium())
 		return precompileModExp(_message);
-	else if (_message.destination == 0x0000000000000000000000000000000000000006_address && m_evmVersion >= langutil::EVMVersion::byzantium())
+	else if (
+		_message.destination == 0x0000000000000000000000000000000000000000000000000000000000000006_address
+		&& m_evmVersion >= langutil::EVMVersion::byzantium())
 		return precompileALTBN128G1Add(_message);
-	else if (_message.destination == 0x0000000000000000000000000000000000000007_address && m_evmVersion >= langutil::EVMVersion::byzantium())
+	else if (
+		_message.destination == 0x0000000000000000000000000000000000000000000000000000000000000007_address
+		&& m_evmVersion >= langutil::EVMVersion::byzantium())
 		return precompileALTBN128G1Mul(_message);
-	else if (_message.destination == 0x0000000000000000000000000000000000000008_address && m_evmVersion >= langutil::EVMVersion::byzantium())
+	else if (
+		_message.destination == 0x0000000000000000000000000000000000000000000000000000000000000008_address
+		&& m_evmVersion >= langutil::EVMVersion::byzantium())
 		return precompileALTBN128PairingProduct(_message);
 
 	auto const stateBackup = accounts;
