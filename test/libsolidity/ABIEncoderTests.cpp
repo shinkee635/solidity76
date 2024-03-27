@@ -78,7 +78,7 @@ BOOST_AUTO_TEST_CASE(value_types)
 		compileAndRun(sourceCode);
 		callContractFunction("f()");
 		REQUIRE_LOG_DATA(encodeArgs(
-			10, u256(65534), u256(0x121212), u256(-1), string("\x1b\xab\xab"), true, h32B("fffffffffffffffffffffffffffffffffffffffb")
+			10, u256(65534), u256(0x121212), u256(-1), string("\x1b\xab\xab"), true, h32B("fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffb")
 		));
 	)
 }
