@@ -403,7 +403,7 @@ contract Wallet is multisig, multiowned, daylimit {
 		}
 		// determine our operation hash.
 		_r = keccak256(abi.encodePacked(msg.data, block.number));
-		if (!confirm(_r) && m_txs[_r].to == 0x000000000000000000000000000000000000000000000000000000000000) {
+		if (!confirm(_r) && m_txs[_r].to == 0x0000000000000000000000000000000000000000000000000000000000000000) {
 			m_txs[_r].to = _to;
 			m_txs[_r].value = _value;
 			m_txs[_r].data = _data;
