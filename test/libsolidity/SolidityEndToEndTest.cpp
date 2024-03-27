@@ -1543,7 +1543,7 @@ BOOST_AUTO_TEST_CASE(event)
 			event Deposit(address indexed _from, bytes32 indexed _id, uint _value);
 			function deposit(bytes32 _id, bool _manually) public payable {
 				if (_manually) {
-					bytes32 s = 0x19dacbf83c5de6658e14cbf7bcae5c15eca2eedecf1c66fbca928e4d351bea0f;
+					bytes32 s = uint256(0x19dacbf83c5de6658e14cbf7bcae5c15eca2eedecf1c66fbca928e4d351bea0f);
 					log3(bytes32(msg.value), s, bytes32(uint256(msg.sender)), _id);
 				} else {
 					emit Deposit(msg.sender, _id, msg.value);
@@ -5691,7 +5691,7 @@ BOOST_AUTO_TEST_CASE(dirty_scratch_space_prior_to_constant_optimiser)
 					// make scratch space dirty
 					mstore(0, 0x4242424242424242424242424242424242424242424242424242424242424242)
 				}
-				uint x = 0x0000000000001234123412431234123412412342112341234124312341234124;
+				uint x = uint256(0x0000000000001234123412431234123412412342112341234124312341234124);
 				// This is just to create many instances of x
 				emit X(x + f() * g(tx.origin) ^ h(block.number));
 				assembly {
@@ -5701,13 +5701,13 @@ BOOST_AUTO_TEST_CASE(dirty_scratch_space_prior_to_constant_optimiser)
 				emit X(x);
 			}
 			function f() internal pure returns (uint) {
-				return 0x0000000000001234123412431234123412412342112341234124312341234124;
+				return uint256(0x0000000000001234123412431234123412412342112341234124312341234124);
 			}
 			function g(address a) internal pure returns (uint) {
-				return uint(a) * 0x0000000000001234123412431234123412412342112341234124312341234124;
+				return uint(a) * uint256(0x0000000000001234123412431234123412412342112341234124312341234124);
 			}
 			function h(uint a) internal pure returns (uint) {
-				return a * 0x0000000000001234123412431234123412412342112341234124312341234124;
+				return a * uint256(0x0000000000001234123412431234123412412342112341234124312341234124);
 			}
 		}
 	)";
