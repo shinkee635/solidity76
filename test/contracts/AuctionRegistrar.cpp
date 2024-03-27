@@ -126,7 +126,7 @@ contract GlobalRegistrar is Registrar, AuctionSystem {
 		record.renewalDate = block.timestamp + c_renewalInterval;
 		record.owner = auction.highestBidder;
 		emit Changed(_name);
-		if (previousOwner != 0x0000000000000000000000000000000000000000) {
+		if (previousOwner != 0x0000000000000000000000000000000000000000000000000000000000000000) {
 			if (!record.owner.send(auction.sumOfBids - auction.highestBid / 100))
 				revert();
 		} else {
@@ -146,7 +146,7 @@ contract GlobalRegistrar is Registrar, AuctionSystem {
 			bid(_name, msg.sender, msg.value);
 		} else {
 			Record storage record = m_toRecord[_name];
-			if (record.owner != 0x0000000000000000000000000000000000000000)
+			if (record.owner != 0x0000000000000000000000000000000000000000000000000000000000000000)
 				revert();
 			m_toRecord[_name].owner = msg.sender;
 			emit Changed(_name);
