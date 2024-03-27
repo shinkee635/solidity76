@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_CASE(value_types)
 				if (x != "abc") return 5;
 				if (e != true) return 6;
 				if (g != this) return 7;
-				return 20;
+				return 32;
 			}
 		}
 	)";

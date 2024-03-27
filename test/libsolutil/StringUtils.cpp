@@ -144,7 +144,7 @@ BOOST_AUTO_TEST_CASE(test_format_number_readable)
 		u256(0xFFFFffffFFFFffff) << 128 |
 		u256(0xFFFFffffFFFFffff) << 64 |
 		u256(0xFFFFffffFFFFffff);
-	BOOST_CHECK_EQUAL(formatNumberReadable(a, true), "0x5555...{+32 more}...5555");
+	BOOST_CHECK_EQUAL(formatNumberReadable(a, true), "0x5555...{+56 more}...5555");
 	BOOST_CHECK_EQUAL(formatNumberReadable(b, true), "0x5555...{+56 more}...5555");
 	BOOST_CHECK_EQUAL(formatNumberReadable(c, true), "0xABCD...{+56 more}...6789");
 	BOOST_CHECK_EQUAL(formatNumberReadable(d, true), "0xAAAAaaaaAAAAaaab * 2**192 - 1");
