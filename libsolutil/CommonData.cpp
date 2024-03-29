@@ -158,7 +158,6 @@ string solidity::util::getChecksummedAddress(string const& _addr)
 		else
 			ret += static_cast<char>(tolower(addressCharacter));
 	}
-	std::cout << "Debug checksum: " << ret << std::endl;
 	return ret;
 }
 
