@@ -108,8 +108,6 @@ std::pair<bool, string> ExecutionFramework::compareAndCreateMessage(
 			expected +
 			"\n";
 	}
-	std::cout << "Debug message" << std::endl;
-	std::cout << message << std::endl;
 	return make_pair(false, message);
 }
 
