@@ -1405,21 +1405,21 @@ BOOST_AUTO_TEST_CASE(cse_remove_unwanted_masking_of_address)
 
 	// leave other opcodes untouched
 	checkCSE({
-		u256("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"),
+		u256("0xffffffffffffffffffffffffffffffffffffffff"),
 		Instruction::CALLVALUE,
 		Instruction::AND
 	}, {
 		Instruction::CALLVALUE,
-		u256("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"),
+		u256("0xffffffffffffffffffffffffffffffffffffffff"),
 		Instruction::AND
 	});
 
 	checkCSE({
 		Instruction::CALLVALUE,
-		u256("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"),
+		u256("0xffffffffffffffffffffffffffffffffffffffff"),
 		Instruction::AND
 	}, {
-		u256("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"),
+		u256("0xffffffffffffffffffffffffffffffffffffffff"),
 		Instruction::CALLVALUE,
 		Instruction::AND
 	});
