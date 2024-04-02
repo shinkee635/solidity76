@@ -66,8 +66,9 @@ protected:
 	{
 		bytes const& ret = call(_name + "(string)", u256(0x20), _arg.length(), _arg);
 		BOOST_REQUIRE(ret.size() == 0x20);
-		BOOST_CHECK(std::count(ret.begin(), ret.begin() + 12, 0) == 12);
-		bytes const addr{ret.begin() + 12, ret.end()};
+		// No longer true if we're using 32 bytes address
+		// BOOST_CHECK(std::count(ret.begin(), ret.begin() + 12, 0) == 12);
+		bytes const addr{ret.begin(), ret.end()};
 		return util::h32B(addr);
 	}
 
