@@ -536,13 +536,13 @@ BOOST_AUTO_TEST_CASE(remove_owner)
 BOOST_AUTO_TEST_CASE(initial_owners)
 {
 	vector<h32B> owners{
-		h32B("0x42c56279432962a17176998a4747d1b4d6ed4367"),
-		h32B("0xd4d4669f5ba9f4c27d38ef02a358c339b5560c47"),
-		h32B("0xe6716f9544a56c530d868e4bfbacb172315bdead"),
-		h32B("0x775e18be7a50a0abb8a4e82b1bd697d79f31fe04"),
-		h32B("0xf4dd5c3794f1fd0cdc0327a83aa472609c806e99"),
-		h32B("0x4c9113886af165b2de069d6e99430647e94a9fff"),
-		h32B("0x3fb1cd2cd96c6d5c0b5eb3322d807b34482481d4")
+		h32B("0x42c56279432962a17176998a4747d1b4d6ed4367123456789012345678901234"),
+		h32B("0xd4d4669f5ba9f4c27d38ef02a358c339b5560c47123456789012345678901234"),
+		h32B("0xe6716f9544a56c530d868e4bfbacb172315bdead123456789012345678901234"),
+		h32B("0x775e18be7a50a0abb8a4e82b1bd697d79f31fe04123456789012345678901234"),
+		h32B("0xf4dd5c3794f1fd0cdc0327a83aa472609c806e99123456789012345678901234"),
+		h32B("0x4c9113886af165b2de069d6e99430647e94a9fff123456789012345678901234"),
+		h32B("0x3fb1cd2cd96c6d5c0b5eb3322d807b34482481d4123456789012345678901234")
 	};
 	deployWallet(0, owners, 4, 2);
 	BOOST_CHECK(callContractFunction("m_numOwners()") == encodeArgs(u256(8)));
@@ -561,7 +561,7 @@ BOOST_AUTO_TEST_CASE(multisig_value_transfer)
 	BOOST_REQUIRE(callContractFunction("addOwner(address)", account(3)) == encodeArgs());
 	// 4 owners, set required to 3
 	BOOST_REQUIRE(callContractFunction("changeRequirement(uint256)", u256(3)) == encodeArgs());
-	h32B destination = h32B("0x5c6d6026d3fb35cd7175fd0054ae8df50d8f8b41");
+	h32B destination = h32B("0x5c6d6026d3fb35cd7175fd0054ae8df50d8f8b41123456789012345678901234");
 	BOOST_CHECK_EQUAL(balanceAt(destination), 0);
 	m_sender = account(0);
 	sendEther(account(1), 10 * ether);
@@ -624,7 +624,7 @@ BOOST_AUTO_TEST_CASE(revoke_transaction)
 	BOOST_REQUIRE(callContractFunction("changeRequirement(uint256)", u256(3)) == encodeArgs());
 	// create a transaction
 	h32B deployer = m_sender;
-	h32B destination = h32B("0x5c6d6026d3fb35cd7175fd0054ae8df50d8f8b41");
+	h32B destination = h32B("0x5c6d6026d3fb35cd7175fd0054ae8df50d8f8b41123456789012345678901234");
 	BOOST_CHECK_EQUAL(balanceAt(destination), 0);
 	m_sender = account(0);
 	sendEther(account(1), 10 * ether);
@@ -664,7 +664,7 @@ BOOST_AUTO_TEST_CASE(daylimit)
 	BOOST_REQUIRE(callContractFunction("changeRequirement(uint256)", u256(3)) == encodeArgs());
 
 	// try to send tx over daylimit
-	h32B destination = h32B("0x5c6d6026d3fb35cd7175fd0054ae8df50d8f8b41");
+	h32B destination = h32B("0x5c6d6026d3fb35cd7175fd0054ae8df50d8f8b41123456789012345678901234");
 	BOOST_CHECK_EQUAL(balanceAt(destination), 0);
 	sendEther(account(1), 10 * ether);
 	m_sender = account(1);
