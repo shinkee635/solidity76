@@ -234,7 +234,7 @@ size_t ContractCompiler::deployLibrary(ContractDefinition const& _contract)
 		codecopy(codepos, subOffset, subSize)
 		// Check that the first opcode is a PUSH32
 		if iszero(eq(0x7f, byte(0, mload(codepos)))) { invalid() }
-		mstore(0, address())
+		mstore(1, address())
 		mstore8(codepos, 0x7f)
 		return(codepos, subSize)
 	}
