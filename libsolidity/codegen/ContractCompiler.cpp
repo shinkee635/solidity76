@@ -228,9 +228,9 @@ size_t ContractCompiler::deployLibrary(ContractDefinition const& _contract)
 	// This code replaces the address added by appendDeployTimeAddress().
 	m_context.appendInlineAssembly(R"(
 	{
-		// If code starts at 11, an mstore(0) writes to the full PUSH32 plus data
+		// If code starts at 0, an mstore(0) writes to the full PUSH32 plus data
 		// without the need for a shift.
-		let codepos := 11
+		let codepos := 0
 		codecopy(codepos, subOffset, subSize)
 		// Check that the first opcode is a PUSH32
 		if iszero(eq(0x7f, byte(0, mload(codepos)))) { invalid() }
