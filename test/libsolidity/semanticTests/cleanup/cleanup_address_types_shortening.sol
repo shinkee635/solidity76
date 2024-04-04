@@ -1,6 +1,6 @@
 contract C {
     function f() public pure returns (address r) {
-        bytes32 x = bytes32(0x1122334455667788990011223344556677889900ff1234567890123456789012);
+        bytes32 x = bytes32(uint256(0x001122334455667788990011223344556677889900Ff1234567890123456789012));
         bytes32 y;
         assembly {
             y := x
@@ -13,7 +13,7 @@ contract C {
     }
 
     function g() public pure returns (address payable r) {
-        bytes32 x = bytes32(0x1122334455667788990011223344556677889900ff1234567890123456789012);
+        bytes32 x = bytes32(uint256(0x1122334455667788990011223344556677889900Ff1234567890123456789012));
         bytes32 y;
         assembly {
             y := x
