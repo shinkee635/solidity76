@@ -42,6 +42,8 @@ RUN set -ex; \
 	rm -rf /var/lib/apt/lists/*
 
 FROM base AS libraries
+RUN  mkdir -p /usr/src/evmone; \
+	 mkdir -p /usr/src/hera
 COPY evmone /usr/src
 COPY hera /usr/src
 
