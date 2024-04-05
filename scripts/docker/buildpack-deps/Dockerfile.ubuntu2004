@@ -53,8 +53,8 @@ RUN set -ex; \
 	cd /usr/src/git; \
 	git clone --branch="v0.4.0" --recurse-submodules https://github.com/ethereum/evmone.git; \
 	cp ../evmone/instructions.cpp ./evmone/lib/evmone; \
-	cp ../evmone/evmc.* ./evmone/evmc/include/emvc; \
-	cp ../evmone/helpers.h ./evmone/evmc/include/emvc; \
+	cp ../evmone/evmc.* ./evmone/evmc/include/evmc; \
+	cp ../evmone/helpers.h ./evmone/evmc/include/evmc; \
 	cd evmone; \
 	mkdir build; \
 	cd build; \
@@ -68,8 +68,8 @@ RUN set -ex; \
 	cd /usr/src/git; \
 	git clone --branch="v0.3.2" --depth 1 --recurse-submodules https://github.com/ewasm/hera.git; \
 	cp ../hera/*.cpp ./hera/src; \
-	cp ../hera/evmc.* ./hera/evmc/include/emvc; \
-	cp ../hera/helpers.h ./hera/evmc/include/emvc; \
+	cp ../hera/evmc.* ./hera/evmc/include/evmc; \
+	cp ../hera/helpers.h ./hera/evmc/include/evmc; \
 	cd hera; \
 	mkdir build; \
 	cd build; \
