@@ -44,7 +44,7 @@ bytes BytesUtils::alignLeft(bytes _bytes)
 {
 	// No longer using output error for bytes longer than 32 now
 	size_t size = min((size_t)32, _bytes.size());
-	bytes _aligned(_bytes.begin(), _bytes.begin() + size);
+	bytes _aligned(_bytes.begin(), _bytes.begin() + (int) size);
 	_aligned.resize(32, 0);
 	return _aligned;
 }
