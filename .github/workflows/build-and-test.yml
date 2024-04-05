@@ -1,6 +1,6 @@
 on:
   push:
-    branches: [ disabled ]
+    branches: [ master ]
   pull_request:
     branches: [ disabled ]
 
