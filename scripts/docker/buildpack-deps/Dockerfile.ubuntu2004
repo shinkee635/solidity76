@@ -43,8 +43,8 @@ RUN set -ex; \
 
 FROM base AS libraries
 ARG GITHUB_WORKSPACE
-COPY ./evmone /usr/src
-COPY ./hera /usr/src
+ADD ${GITHUB_WORKSPACE}/evmone /usr/src
+ADD ${GITHUB_WORKSPACE}/hera /usr/src
 
 # EVMONE
 RUN set -ex; \
