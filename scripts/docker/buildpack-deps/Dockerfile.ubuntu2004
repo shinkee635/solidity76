@@ -53,7 +53,7 @@ RUN set -ex; \
 	cd /usr/src/git; \
 	git clone --branch="v0.4.0" --recurse-submodules https://github.com/ethereum/evmone.git; \
 	cp ../evmone/instructions.cpp ./evmone/lib/evmone; \
-	cp ../evmone/emvc.* ./evmone/evmc/include/emvc; \
+	cp ../evmone/evmc.* ./evmone/evmc/include/emvc; \
 	cp ../evmone/helpers.h ./evmone/evmc/include/emvc; \
 	cd evmone; \
 	mkdir build; \
