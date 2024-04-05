@@ -44,8 +44,6 @@ RUN set -ex; \
 FROM base AS libraries
 
 ARG GITHUB_WORKSPACE
-ls ${GITHUB_WORKSPACE}
-ls ${GITHUB_WORKSPACE}/..
 # EVMONE
 RUN set -ex; \
 	cd /usr/src; \
