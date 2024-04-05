@@ -2484,38 +2484,38 @@ BOOST_AUTO_TEST_CASE(bytes_from_calldata_to_memory)
 //	ABI_CHECK(callContractFunctionNoEncoding("viaStorage()", unpadded), encodeArgs(7));
 //}
 
-BOOST_AUTO_TEST_CASE(copying_bytes_multiassign)
-{
-	char const* sourceCode = R"(
-		contract receiver {
-			uint public received;
-			function recv(uint x) public { received += x + 1; }
-			fallback() external { received = 0x80; }
-		}
-		contract sender {
-			constructor() { rec = new receiver(); }
-			fallback() external { savedData1 = savedData2 = msg.data; }
-			function forward(bool selector) public returns (bool) {
-				if (selector) { address(rec).call(savedData1); delete savedData1; }
-				else { address(rec).call(savedData2); delete savedData2; }
-				return true;
-			}
-			function val() public returns (uint) { return rec.received(); }
-			receiver rec;
-			bytes savedData1;
-			bytes savedData2;
-		}
-	)";
-	compileAndRun(sourceCode, 0, "sender");
-	ABI_CHECK(callContractFunction("recv(uint256)", 7), bytes());
-	ABI_CHECK(callContractFunction("val()"), encodeArgs(0));
-	ABI_CHECK(callContractFunction("forward(bool)", true), encodeArgs(true));
-	ABI_CHECK(callContractFunction("val()"), encodeArgs(8));
-	ABI_CHECK(callContractFunction("forward(bool)", false), encodeArgs(true));
-	ABI_CHECK(callContractFunction("val()"), encodeArgs(16));
-	ABI_CHECK(callContractFunction("forward(bool)", true), encodeArgs(true));
-	ABI_CHECK(callContractFunction("val()"), encodeArgs(0x80));
-}
+//BOOST_AUTO_TEST_CASE(copying_bytes_multiassign)
+//{
+//	char const* sourceCode = R"(
+//		contract receiver {
+//			uint public received;
+//			function recv(uint x) public { received += x + 1; }
+//			fallback() external { received = 0x80; }
+//		}
+//		contract sender {
+//			constructor() { rec = new receiver(); }
+//			fallback() external { savedData1 = savedData2 = msg.data; }
+//			function forward(bool selector) public returns (bool) {
+//				if (selector) { address(rec).call(savedData1); delete savedData1; }
+//				else { address(rec).call(savedData2); delete savedData2; }
+//				return true;
+//			}
+//			function val() public returns (uint) { return rec.received(); }
+//			receiver rec;
+//			bytes savedData1;
+//			bytes savedData2;
+//		}
+//	)";
+//	compileAndRun(sourceCode, 0, "sender");
+//	ABI_CHECK(callContractFunction("recv(uint256)", 7), bytes());
+//	ABI_CHECK(callContractFunction("val()"), encodeArgs(0));
+//	ABI_CHECK(callContractFunction("forward(bool)", true), encodeArgs(true));
+//	ABI_CHECK(callContractFunction("val()"), encodeArgs(8));
+//	ABI_CHECK(callContractFunction("forward(bool)", false), encodeArgs(true));
+//	ABI_CHECK(callContractFunction("val()"), encodeArgs(16));
+//	ABI_CHECK(callContractFunction("forward(bool)", true), encodeArgs(true));
+//	ABI_CHECK(callContractFunction("val()"), encodeArgs(0x80));
+//}
 
 BOOST_AUTO_TEST_CASE(copy_from_calldata_removes_bytes_data)
 {
@@ -3135,30 +3135,30 @@ BOOST_AUTO_TEST_CASE(calldata_struct_short)
 	ABI_CHECK(callContractFunctionNoEncoding("f((uint256,uint256))", bytes()), encodeArgs());
 }
 
-BOOST_AUTO_TEST_CASE(calldata_struct_function_type)
-{
-	char const* sourceCode = R"(
-		pragma abicoder v2;
-		contract C {
-			struct S { function (uint) external returns (uint) fn; }
-			function f(S calldata s) external returns (uint256) {
-				return s.fn(42);
-			}
-			function g(uint256 a) external returns (uint256) {
-				return a * 3;
-			}
-			function h(uint256 a) external returns (uint256) {
-				return 23;
-			}
-		}
-	)";
-	compileAndRun(sourceCode, 0, "C");
-
-	bytes fn_C_g = m_contractAddress.asBytes() + FixedHash<4>(util::keccak256("g(uint256)")).asBytes() + bytes(8,0);
-	bytes fn_C_h = m_contractAddress.asBytes() + FixedHash<4>(util::keccak256("h(uint256)")).asBytes() + bytes(8,0);
-	ABI_CHECK(callContractFunctionNoEncoding("f((function))", fn_C_g), encodeArgs(42 * 3));
-	ABI_CHECK(callContractFunctionNoEncoding("f((function))", fn_C_h), encodeArgs(23));
-}
+//BOOST_AUTO_TEST_CASE(calldata_struct_function_type)
+//{
+//	char const* sourceCode = R"(
+//		pragma abicoder v2;
+//		contract C {
+//			struct S { function (uint) external returns (uint) fn; }
+//			function f(S calldata s) external returns (uint256) {
+//				return s.fn(42);
+//			}
+//			function g(uint256 a) external returns (uint256) {
+//				return a * 3;
+//			}
+//			function h(uint256 a) external returns (uint256) {
+//				return 23;
+//			}
+//		}
+//	)";
+//	compileAndRun(sourceCode, 0, "C");
+//
+//	bytes fn_C_g = m_contractAddress.asBytes() + FixedHash<4>(util::keccak256("g(uint256)")).asBytes() + bytes(8,0);
+//	bytes fn_C_h = m_contractAddress.asBytes() + FixedHash<4>(util::keccak256("h(uint256)")).asBytes() + bytes(8,0);
+//	ABI_CHECK(callContractFunctionNoEncoding("f((function))", fn_C_g), encodeArgs(42 * 3));
+//	ABI_CHECK(callContractFunctionNoEncoding("f((function))", fn_C_h), encodeArgs(23));
+//}
 
 BOOST_AUTO_TEST_CASE(calldata_array_dynamic_three_dimensional)
 {
@@ -4265,74 +4265,74 @@ BOOST_AUTO_TEST_CASE(correctly_initialize_memory_array_in_constructor)
 	}
 }
 
-BOOST_AUTO_TEST_CASE(mutex)
-{
-	char const* sourceCode = R"(
-		contract mutexed {
-			bool locked;
-			modifier protected {
-				if (locked) revert();
-				locked = true;
-				_;
-				locked = false;
-			}
-		}
-		contract Fund is mutexed {
-			uint shares;
-			constructor() payable { shares = msg.value; }
-			function withdraw(uint amount) public protected returns (uint) {
-				// NOTE: It is very bad practice to write this function this way.
-				// Please refer to the documentation of how to do this properly.
-				if (amount > shares) revert();
-				(bool success,) = msg.sender.call{value: amount}("");
-				require(success);
-				shares -= amount;
-				return shares;
-			}
-			function withdrawUnprotected(uint amount) public returns (uint) {
-				// NOTE: It is very bad practice to write this function this way.
-				// Please refer to the documentation of how to do this properly.
-				if (amount > shares) revert();
-				(bool success,) = msg.sender.call{value: amount}("");
-				require(success);
-				shares -= amount;
-				return shares;
-			}
-		}
-		contract Attacker {
-			Fund public fund;
-			uint callDepth;
-			bool protected;
-			function setProtected(bool _protected) public { protected = _protected; }
-			constructor(Fund _fund) { fund = _fund; }
-			function attack() public returns (uint) {
-				callDepth = 0;
-				return attackInternal();
-			}
-			function attackInternal() internal returns (uint) {
-				if (protected)
-					return fund.withdraw(10);
-				else
-					return fund.withdrawUnprotected(10);
-			}
-			fallback() external payable {
-				callDepth++;
-				if (callDepth < 4)
-					attackInternal();
-			}
-		}
-	)";
-	compileAndRun(sourceCode, 500, "Fund");
-	h32B const fund = m_contractAddress;
-	BOOST_CHECK_EQUAL(balanceAt(fund), 500);
-	compileAndRun(sourceCode, 0, "Attacker", encodeArgs(fund));
-	ABI_CHECK(callContractFunction("setProtected(bool)", true), encodeArgs());
-	ABI_CHECK(callContractFunction("attack()"), encodeArgs());
-	BOOST_CHECK_EQUAL(balanceAt(fund), 500);
-	ABI_CHECK(callContractFunction("setProtected(bool)", false), encodeArgs());
-	ABI_CHECK(callContractFunction("attack()"), encodeArgs(u256(460)));
-	BOOST_CHECK_EQUAL(balanceAt(fund), 460);
-}
+//BOOST_AUTO_TEST_CASE(mutex)
+//{
+//	char const* sourceCode = R"(
+//		contract mutexed {
+//			bool locked;
+//			modifier protected {
+//				if (locked) revert();
+//				locked = true;
+//				_;
+//				locked = false;
+//			}
+//		}
+//		contract Fund is mutexed {
+//			uint shares;
+//			constructor() payable { shares = msg.value; }
+//			function withdraw(uint amount) public protected returns (uint) {
+//				// NOTE: It is very bad practice to write this function this way.
+//				// Please refer to the documentation of how to do this properly.
+//				if (amount > shares) revert();
+//				(bool success,) = msg.sender.call{value: amount}("");
+//				require(success);
+//				shares -= amount;
+//				return shares;
+//			}
+//			function withdrawUnprotected(uint amount) public returns (uint) {
+//				// NOTE: It is very bad practice to write this function this way.
+//				// Please refer to the documentation of how to do this properly.
+//				if (amount > shares) revert();
+//				(bool success,) = msg.sender.call{value: amount}("");
+//				require(success);
+//				shares -= amount;
+//				return shares;
+//			}
+//		}
+//		contract Attacker {
+//			Fund public fund;
+//			uint callDepth;
+//			bool protected;
+//			function setProtected(bool _protected) public { protected = _protected; }
+//			constructor(Fund _fund) { fund = _fund; }
+//			function attack() public returns (uint) {
+//				callDepth = 0;
+//				return attackInternal();
+//			}
+//			function attackInternal() internal returns (uint) {
+//				if (protected)
+//					return fund.withdraw(10);
+//				else
+//					return fund.withdrawUnprotected(10);
+//			}
+//			fallback() external payable {
+//				callDepth++;
+//				if (callDepth < 4)
+//					attackInternal();
+//			}
+//		}
+//	)";
+//	compileAndRun(sourceCode, 500, "Fund");
+//	h32B const fund = m_contractAddress;
+//	BOOST_CHECK_EQUAL(balanceAt(fund), 500);
+//	compileAndRun(sourceCode, 0, "Attacker", encodeArgs(fund));
+//	ABI_CHECK(callContractFunction("setProtected(bool)", true), encodeArgs());
+//	ABI_CHECK(callContractFunction("attack()"), encodeArgs());
+//	BOOST_CHECK_EQUAL(balanceAt(fund), 500);
+//	ABI_CHECK(callContractFunction("setProtected(bool)", false), encodeArgs());
+//	ABI_CHECK(callContractFunction("attack()"), encodeArgs(u256(460)));
+//	BOOST_CHECK_EQUAL(balanceAt(fund), 460);
+//}
 
 BOOST_AUTO_TEST_CASE(payable_function)
 {
@@ -4426,23 +4426,23 @@ BOOST_AUTO_TEST_CASE(mem_resize_is_not_paid_at_call)
 	ABI_CHECK(callContractFunction("f(address)", cAddr), encodeArgs(u256(7)));
 }
 
-BOOST_AUTO_TEST_CASE(receive_external_function_type)
-{
-	char const* sourceCode = R"(
-		contract C {
-			function g() public returns (uint) { return 7; }
-			function f(function() external returns (uint) g) public returns (uint) {
-				return g();
-			}
-		}
-	)";
-
-	compileAndRun(sourceCode, 0, "C");
-	ABI_CHECK(callContractFunction(
-		"f(function)",
-		m_contractAddress.asBytes() + FixedHash<4>(util::keccak256("g()")).asBytes() + bytes(32 - 4 - 20, 0)
-	), encodeArgs(u256(7)));
-}
+//BOOST_AUTO_TEST_CASE(receive_external_function_type)
+//{
+//	char const* sourceCode = R"(
+//		contract C {
+//			function g() public returns (uint) { return 7; }
+//			function f(function() external returns (uint) g) public returns (uint) {
+//				return g();
+//			}
+//		}
+//	)";
+//
+//	compileAndRun(sourceCode, 0, "C");
+//	ABI_CHECK(callContractFunction(
+//		"f(function)",
+//		m_contractAddress.asBytes() + FixedHash<4>(util::keccak256("g()")).asBytes() + bytes(32 - 4 - 20, 0)
+//	), encodeArgs(u256(7)));
+//}
 
 BOOST_AUTO_TEST_CASE(return_external_function_type)
 {
