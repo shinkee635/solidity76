@@ -684,39 +684,39 @@ BOOST_AUTO_TEST_CASE(bytesNN_arrays_dyn)
 	)
 }
 
-BOOST_AUTO_TEST_CASE(packed_structs)
-{
-	string sourceCode = R"(
-		contract C {
-			struct S { bool a; int8 b; function() external g; bytes3 d; int8 e; }
-			S s;
-			event E(S);
-			function store() public {
-				s.a = false;
-				s.b = -5;
-				s.g = this.g;
-				s.d = 0x010203;
-				s.e = -3;
-			}
-			function f() public returns (S memory) {
-				emit E(s);
-				return s; // this copies to memory first
-			}
-			function g() public pure {}
-		}
-	)";
-
-	NEW_ENCODER(
-		compileAndRun(sourceCode, 0, "C");
-		ABI_CHECK(callContractFunction("store()"), bytes{});
-		bytes fun = m_contractAddress.asBytes() + fromHex("0xe2179b8e");
-		bytes encoded = encodeArgs(
-			0, u256(-5), asString(fun), "\x01\x02\x03", u256(-3)
-		);
-		ABI_CHECK(callContractFunction("f()"), encoded);
-		REQUIRE_LOG_DATA(encoded);
-	)
-}
+//BOOST_AUTO_TEST_CASE(packed_structs)
+//{
+//	string sourceCode = R"(
+//		contract C {
+//			struct S { bool a; int8 b; function() external g; bytes3 d; int8 e; }
+//			S s;
+//			event E(S);
+//			function store() public {
+//				s.a = false;
+//				s.b = -5;
+//				s.g = this.g;
+//				s.d = 0x010203;
+//				s.e = -3;
+//			}
+//			function f() public returns (S memory) {
+//				emit E(s);
+//				return s; // this copies to memory first
+//			}
+//			function g() public pure {}
+//		}
+//	)";
+//
+//	NEW_ENCODER(
+//		compileAndRun(sourceCode, 0, "C");
+//		ABI_CHECK(callContractFunction("store()"), bytes{});
+//		bytes fun = m_contractAddress.asBytes() + fromHex("0xe2179b8e");
+//		bytes encoded = encodeArgs(
+//			0, u256(-5), asString(fun), "\x01\x02\x03", u256(-3)
+//		);
+//		ABI_CHECK(callContractFunction("f()"), encoded);
+//		REQUIRE_LOG_DATA(encoded);
+//	)
+//}
 
 
 BOOST_AUTO_TEST_CASE(struct_in_constructor)

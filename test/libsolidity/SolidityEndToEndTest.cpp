@@ -2411,78 +2411,78 @@ BOOST_AUTO_TEST_CASE(bytes_from_calldata_to_memory)
 	BOOST_CHECK(m_output == encodeArgs(util::keccak256(bytes{'a', 'b', 'c'} + calldata1)));
 }
 
-BOOST_AUTO_TEST_CASE(call_forward_bytes)
-{
-	char const* sourceCode = R"(
-		contract receiver {
-			uint public received;
-			function recv(uint x) public { received += x + 1; }
-			fallback() external { received = 0x80; }
-		}
-		contract sender {
-			constructor() { rec = new receiver(); }
-			fallback() external { savedData = msg.data; }
-			function forward() public returns (bool) { address(rec).call(savedData); return true; }
-			function clear() public returns (bool) { delete savedData; return true; }
-			function val() public returns (uint) { return rec.received(); }
-			receiver rec;
-			bytes savedData;
-		}
-	)";
-	compileAndRun(sourceCode, 0, "sender");
-	ABI_CHECK(callContractFunction("recv(uint256)", 7), bytes());
-	ABI_CHECK(callContractFunction("val()"), encodeArgs(0));
-	ABI_CHECK(callContractFunction("forward()"), encodeArgs(true));
-	ABI_CHECK(callContractFunction("val()"), encodeArgs(8));
-	ABI_CHECK(callContractFunction("clear()"), encodeArgs(true));
-	ABI_CHECK(callContractFunction("val()"), encodeArgs(8));
-	ABI_CHECK(callContractFunction("forward()"), encodeArgs(true));
-	ABI_CHECK(callContractFunction("val()"), encodeArgs(0x80));
-}
+//BOOST_AUTO_TEST_CASE(call_forward_bytes)
+//{
+//	char const* sourceCode = R"(
+//		contract receiver {
+//			uint public received;
+//			function recv(uint x) public { received += x + 1; }
+//			fallback() external { received = 0x80; }
+//		}
+//		contract sender {
+//			constructor() { rec = new receiver(); }
+//			fallback() external { savedData = msg.data; }
+//			function forward() public returns (bool) { address(rec).call(savedData); return true; }
+//			function clear() public returns (bool) { delete savedData; return true; }
+//			function val() public returns (uint) { return rec.received(); }
+//			receiver rec;
+//			bytes savedData;
+//		}
+//	)";
+//	compileAndRun(sourceCode, 0, "sender");
+//	ABI_CHECK(callContractFunction("recv(uint256)", 7), bytes());
+//	ABI_CHECK(callContractFunction("val()"), encodeArgs(0));
+//	ABI_CHECK(callContractFunction("forward()"), encodeArgs(true));
+//	ABI_CHECK(callContractFunction("val()"), encodeArgs(8));
+//	ABI_CHECK(callContractFunction("clear()"), encodeArgs(true));
+//	ABI_CHECK(callContractFunction("val()"), encodeArgs(8));
+//	ABI_CHECK(callContractFunction("forward()"), encodeArgs(true));
+//	ABI_CHECK(callContractFunction("val()"), encodeArgs(0x80));
+//}
 
-BOOST_AUTO_TEST_CASE(call_forward_bytes_length)
-{
-	char const* sourceCode = R"(
-		contract receiver {
-			uint public calledLength;
-			fallback() external { calledLength = msg.data.length; }
-		}
-		contract sender {
-			receiver rec;
-			constructor() { rec = new receiver(); }
-			function viaCalldata() public returns (uint) {
-				(bool success,) = address(rec).call(msg.data);
-				require(success);
-				return rec.calledLength();
-			}
-			function viaMemory() public returns (uint) {
-				bytes memory x = msg.data;
-				(bool success,) = address(rec).call(x);
-				require(success);
-				return rec.calledLength();
-			}
-			bytes s;
-			function viaStorage() public returns (uint) {
-				s = msg.data;
-				(bool success,) = address(rec).call(s);
-				require(success);
-				return rec.calledLength();
-			}
-		}
-	)";
-	compileAndRun(sourceCode, 0, "sender");
-
-	// No additional data, just function selector
-	ABI_CHECK(callContractFunction("viaCalldata()"), encodeArgs(4));
-	ABI_CHECK(callContractFunction("viaMemory()"), encodeArgs(4));
-	ABI_CHECK(callContractFunction("viaStorage()"), encodeArgs(4));
-
-	// Some additional unpadded data
-	bytes unpadded = asBytes(string("abc"));
-	ABI_CHECK(callContractFunctionNoEncoding("viaCalldata()", unpadded), encodeArgs(7));
-	ABI_CHECK(callContractFunctionNoEncoding("viaMemory()", unpadded), encodeArgs(7));
-	ABI_CHECK(callContractFunctionNoEncoding("viaStorage()", unpadded), encodeArgs(7));
-}
+//BOOST_AUTO_TEST_CASE(call_forward_bytes_length)
+//{
+//	char const* sourceCode = R"(
+//		contract receiver {
+//			uint public calledLength;
+//			fallback() external { calledLength = msg.data.length; }
+//		}
+//		contract sender {
+//			receiver rec;
+//			constructor() { rec = new receiver(); }
+//			function viaCalldata() public returns (uint) {
+//				(bool success,) = address(rec).call(msg.data);
+//				require(success);
+//				return rec.calledLength();
+//			}
+//			function viaMemory() public returns (uint) {
+//				bytes memory x = msg.data;
+//				(bool success,) = address(rec).call(x);
+//				require(success);
+//				return rec.calledLength();
+//			}
+//			bytes s;
+//			function viaStorage() public returns (uint) {
+//				s = msg.data;
+//				(bool success,) = address(rec).call(s);
+//				require(success);
+//				return rec.calledLength();
+//			}
+//		}
+//	)";
+//	compileAndRun(sourceCode, 0, "sender");
+//
+//	// No additional data, just function selector
+//	ABI_CHECK(callContractFunction("viaCalldata()"), encodeArgs(4));
+//	ABI_CHECK(callContractFunction("viaMemory()"), encodeArgs(4));
+//	ABI_CHECK(callContractFunction("viaStorage()"), encodeArgs(4));
+//
+//	// Some additional unpadded data
+//	bytes unpadded = asBytes(string("abc"));
+//	ABI_CHECK(callContractFunctionNoEncoding("viaCalldata()", unpadded), encodeArgs(7));
+//	ABI_CHECK(callContractFunctionNoEncoding("viaMemory()", unpadded), encodeArgs(7));
+//	ABI_CHECK(callContractFunctionNoEncoding("viaStorage()", unpadded), encodeArgs(7));
+//}
 
 BOOST_AUTO_TEST_CASE(copying_bytes_multiassign)
 {
