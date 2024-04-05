@@ -42,27 +42,15 @@ using namespace std;
 
 bytes BytesUtils::alignLeft(bytes _bytes)
 {
-	// No longer using output error for bytes longer than 32 now
-	size_t size = min((size_t)32, _bytes.size());
-	bytes _aligned(_bytes.begin(), _bytes.begin() + (int) size);
-	_aligned.resize(32, 0);
-	return _aligned;
+	soltestAssert(_bytes.size() <= 32, "");
+	size_t size = _bytes.size();
+	return std::move(_bytes) + bytes(32 - size, 0);
 }
 
 bytes BytesUtils::alignRight(bytes _bytes)
 {
-	// No longer using output error for bytes longer than 32 now
-	if (_bytes.size() >= 32)
-	{
-		return bytes(_bytes.end() - 32, _bytes.end());
-	}
-	else
-	{
-		// If the vector is less than 32 bytes, prepend it with zeroes
-		bytes _aligned(32 - _bytes.size(), 0); 
-		_aligned.insert(_aligned.end(), _bytes.begin(), _bytes.end()); 
-		return _aligned;
-	}
+	soltestAssert(_bytes.size() <= 32, "");
+	return bytes(32 - _bytes.size(), 0) + std::move(_bytes);
 }
 
 bytes BytesUtils::applyAlign(
