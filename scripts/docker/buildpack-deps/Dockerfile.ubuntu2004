@@ -44,8 +44,8 @@ RUN set -ex; \
 FROM base AS libraries
 RUN  mkdir -p /usr/src/evmone; \
 	 mkdir -p /usr/src/hera
-COPY evmone /usr/src
-COPY hera /usr/src
+COPY evmone /usr/src/evmone
+COPY hera /usr/src/hera
 
 # EVMONE
 RUN set -ex; \
