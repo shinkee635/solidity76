@@ -42,9 +42,8 @@ RUN set -ex; \
 	rm -rf /var/lib/apt/lists/*
 
 FROM base AS libraries
-ARG GITHUB_WORKSPACE
-ADD ${GITHUB_WORKSPACE}/evmone /usr/src
-ADD ${GITHUB_WORKSPACE}/hera /usr/src
+COPY evmone /usr/src
+COPY hera /usr/src
 
 # EVMONE
 RUN set -ex; \
