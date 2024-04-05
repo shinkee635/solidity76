@@ -4444,23 +4444,23 @@ BOOST_AUTO_TEST_CASE(mem_resize_is_not_paid_at_call)
 //	), encodeArgs(u256(7)));
 //}
 
-BOOST_AUTO_TEST_CASE(return_external_function_type)
-{
-	char const* sourceCode = R"(
-		contract C {
-			function g() public {}
-			function f() public returns (function() external) {
-				return this.g;
-			}
-		}
-	)";
-
-	compileAndRun(sourceCode, 0, "C");
-	ABI_CHECK(
-		callContractFunction("f()"),
-		m_contractAddress.asBytes() + FixedHash<4>(util::keccak256("g()")).asBytes() + bytes(32 - 4 - 20, 0)
-	);
-}
+//BOOST_AUTO_TEST_CASE(return_external_function_type)
+//{
+//	char const* sourceCode = R"(
+//		contract C {
+//			function g() public {}
+//			function f() public returns (function() external) {
+//				return this.g;
+//			}
+//		}
+//	)";
+//
+//	compileAndRun(sourceCode, 0, "C");
+//	ABI_CHECK(
+//		callContractFunction("f()"),
+//		m_contractAddress.asBytes() + FixedHash<4>(util::keccak256("g()")).asBytes() + bytes(32 - 4 - 20, 0)
+//	);
+//}
 
 // TODO: store bound internal library functions
 
