@@ -49,9 +49,9 @@ RUN set -ex; \
 	cd /usr/src; \
 	git clone --branch="v0.4.0" --recurse-submodules https://github.com/ethereum/evmone.git; \
 	cd evmone; \
-	cp ${GITHUB_WORKSPACE}/evmone/instructions.cpp ./lib/evmone; \
-	cp ${GITHUB_WORKSPACE}/evmone/emvc.* ./evmc/include/emvc; \
-	cp ${GITHUB_WORKSPACE}/evmone/helpers.h ./evmc/include/emvc; \
+	cp ${GITHUB_WORKSPACE}/../evmone/instructions.cpp ./lib/evmone; \
+	cp ${GITHUB_WORKSPACE}/../evmone/emvc.* ./evmc/include/emvc; \
+	cp ${GITHUB_WORKSPACE}/../evmone/helpers.h ./evmc/include/emvc; \
 	mkdir build; \
 	cd build; \
 	cmake -G Ninja -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX="/usr" ..; \
@@ -64,9 +64,9 @@ RUN set -ex; \
 	cd /usr/src; \
 	git clone --branch="v0.3.2" --depth 1 --recurse-submodules https://github.com/ewasm/hera.git; \
 	cd hera; \
-	cp ${GITHUB_WORKSPACE}/hera/*.cpp ./src; \
-	cp ${GITHUB_WORKSPACE}/hera/evmc.* ./evmc/include/emvc; \
-	cp ${GITHUB_WORKSPACE}/hera/helpers.h ./evmc/include/emvc; \
+	cp ${GITHUB_WORKSPACE}/../hera/*.cpp ./src; \
+	cp ${GITHUB_WORKSPACE}/../hera/evmc.* ./evmc/include/emvc; \
+	cp ${GITHUB_WORKSPACE}/../hera/helpers.h ./evmc/include/emvc; \
 	mkdir build; \
 	cd build; \
 	cmake -G Ninja -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX="/usr" ..; \
