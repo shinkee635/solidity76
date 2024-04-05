@@ -43,8 +43,8 @@ RUN set -ex; \
 
 FROM base AS libraries
 
-RUN cp -r evmone /usr/src; \
-	cp -r hera /usr/src
+COPY evmone /usr/src
+COPY hera /usr/src
 
 # EVMONE
 RUN set -ex; \
