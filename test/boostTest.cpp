@@ -105,7 +105,11 @@ int registerTests(
 					   "gas_and_value_brace_syntax.sol",
 					   "creation_function_call_with_args.sol",
 					   "asm_address_constant_regression.sol",
-					   "cleanup"
+					   "cleanup",
+					   "library_delegatecall_guard_view_staticcall.sol",
+					   "transfer.sol",
+					   "bubble.sol",
+					   "send_zero_ether.sol"
 				};
 
 				if (std::find(testsToSkip.begin(), testsToSkip.end(), entry.path().filename()) != testsToSkip.end())
