@@ -104,7 +104,8 @@ int registerTests(
 					   "gas_and_value_basic.sol",
 					   "gas_and_value_brace_syntax.sol",
 					   "creation_function_call_with_args.sol",
-					   "asm_address_constant_regression.sol"
+					   "asm_address_constant_regression.sol",
+					   "cleanup"
 				};
 
 				if (std::find(testsToSkip.begin(), testsToSkip.end(), entry.path().filename()) != testsToSkip.end())
