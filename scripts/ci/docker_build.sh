@@ -30,5 +30,5 @@ echo "-- build_docker"
 
 # This is a workaround: we run `docker build` twice to prevent the `layer does not exist` problem.
 # See https://github.com/moby/moby/issues/37965.
-docker build "scripts/docker/${IMAGE_NAME}" --file "scripts/docker/${IMAGE_NAME}/Dockerfile.${IMAGE_VARIANT}" --tag "${IMAGE_NAME}" ||
-  docker build "scripts/docker/${IMAGE_NAME}" --file "scripts/docker/${IMAGE_NAME}/Dockerfile.${IMAGE_VARIANT}" --tag "${IMAGE_NAME}"
+docker build --build-arg GITHUB_WORKSPACE="$GITHUB_WORKSPACE" "scripts/docker/${IMAGE_NAME}" --file "scripts/docker/${IMAGE_NAME}/Dockerfile.${IMAGE_VARIANT}" --tag "${IMAGE_NAME}" ||
+  docker build --build-arg GITHUB_WORKSPACE="$GITHUB_WORKSPACE" "scripts/docker/${IMAGE_NAME}" --file "scripts/docker/${IMAGE_NAME}/Dockerfile.${IMAGE_VARIANT}" --tag "${IMAGE_NAME}"
