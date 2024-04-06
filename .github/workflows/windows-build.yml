@@ -1,8 +1,6 @@
 on:
   push:
     branches: [ windows-build ]
-  pull_request:
-    branches: [ windows-build ]
 
 jobs:
   windows-build:
