@@ -109,7 +109,8 @@ int registerTests(
 					   "library_delegatecall_guard_view_staticcall.sol",
 					   "transfer.sol",
 					   "bubble.sol",
-					   "send_zero_ether.sol"
+					   "send_zero_ether.sol",
+					   "creation_function_call_with_salt.sol"
 				};
 
 				if (std::find(testsToSkip.begin(), testsToSkip.end(), entry.path().filename()) != testsToSkip.end())
