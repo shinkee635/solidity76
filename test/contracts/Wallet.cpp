@@ -469,7 +469,7 @@ BOOST_AUTO_TEST_CASE(creation)
 	deployWallet(200);
 	BOOST_REQUIRE(callContractFunction("isOwner(address)", m_sender) == encodeArgs(true));
 	bool v2 = solidity::test::CommonOptions::get().useABIEncoderV2;
-	BOOST_REQUIRE(callContractFunction("isOwner(address)", h256(~0)) == (v2 ? encodeArgs() : encodeArgs(false)));
+	BOOST_REQUIRE(callContractFunction("isOwner(address)", h256(~0)) == (v2 ? encodeArgs(false) : encodeArgs(false)));
 }
 
 BOOST_AUTO_TEST_CASE(add_owners)
