@@ -1366,7 +1366,7 @@ BOOST_AUTO_TEST_CASE(cse_remove_unwanted_masking_of_address)
 	for (auto const& op: ops)
 	{
 		checkCSE({
-			u256("0xffffffffffffffffffffffffffffffffffffffff"),
+			u256("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"),
 			op,
 			Instruction::AND
 		}, {
@@ -1375,7 +1375,7 @@ BOOST_AUTO_TEST_CASE(cse_remove_unwanted_masking_of_address)
 
 		checkCSE({
 			op,
-			u256("0xffffffffffffffffffffffffffffffffffffffff"),
+			u256("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"),
 			Instruction::AND
 		}, {
 			op

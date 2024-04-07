@@ -13,9 +13,9 @@ contract C {
 		// Fails because the above is true.
 		assert(f(0x4266, 0x8) == 0x120939);
 
-		assert(f(0x4266, 0xf0) == 0x4266000000000000000000000000000000000000000000000000000000000000);
+		assert(f(0x4266, 0xf0) == uint256(0x4266000000000000000000000000000000000000000000000000000000000000));
 		// Fails because the above is true.
-		assert(f(0x4266, 0xf0) == 0x4266000000000000000000000000000000000000000000000000000000000001);
+		assert(f(0x4266, 0xf0) == uint256(0x4266000000000000000000000000000000000000000000000000000000000001));
 
 		assert(f(0x4266, 0x4266) == 0);
 		// Fails because the above is true.
@@ -25,5 +25,5 @@ contract C {
 // ----
 // Warning 6328: (250-282): CHC: Assertion violation happens here.
 // Warning 6328: (363-397): CHC: Assertion violation happens here.
-// Warning 6328: (537-630): CHC: Assertion violation happens here.
-// Warning 6328: (707-737): CHC: Assertion violation happens here.
+// Warning 6328: (546-648): CHC: Assertion violation happens here.
+// Warning 6328: (725-755): CHC: Assertion violation happens here.

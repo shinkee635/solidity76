@@ -13,12 +13,12 @@ contract C {
         assembly {
             c := shl(
                 1,
-                0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+                0x00ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
             )
         }
         assert(
             c ==
-                0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe
+                0x00fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe
         );
         return true;
     }
@@ -28,7 +28,7 @@ contract C {
         assembly {
             c := shl(
                 256,
-                0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+                0x00ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
             )
         }
         assert(c == 0);
@@ -49,12 +49,12 @@ contract C {
         assembly {
             c := shr(
                 1,
-                0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+                0x00ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
             )
         }
         assert(
             c ==
-                0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+                0x007fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
         );
         return true;
     }
@@ -64,7 +64,7 @@ contract C {
         assembly {
             c := shr(
                 256,
-                0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+                0x00ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
             )
         }
         assert(c == 0);

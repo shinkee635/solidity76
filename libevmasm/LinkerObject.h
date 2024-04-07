@@ -49,7 +49,7 @@ struct LinkerObject
 	void append(LinkerObject const& _other);
 
 	/// Links the given libraries by replacing their uses in the code and removes them from the references.
-	void link(std::map<std::string, util::h160> const& _libraryAddresses);
+	void link(std::map<std::string, util::h32B> const& _libraryAddresses);
 
 	/// @returns a hex representation of the bytecode of the given object, replacing unlinked
 	/// addresses by placeholders. This output is lowercase.
@@ -61,9 +61,9 @@ struct LinkerObject
 	static std::string libraryPlaceholder(std::string const& _libraryName);
 
 private:
-	static util::h160 const* matchLibrary(
+	static util::h32B const* matchLibrary(
 		std::string const& _linkRefName,
-		std::map<std::string, util::h160> const& _libraryAddresses
+		std::map<std::string, util::h32B> const& _libraryAddresses
 	);
 };
 

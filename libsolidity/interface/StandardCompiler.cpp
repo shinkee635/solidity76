@@ -340,7 +340,7 @@ Json::Value formatLinkReferences(std::map<size_t, std::string> const& linkRefere
 
 		Json::Value entry = Json::objectValue;
 		entry["start"] = Json::UInt(ref.first);
-		entry["length"] = 20;
+		entry["length"] = 32;
 
 		libraryArray.append(entry);
 		fileObject[name] = libraryArray;
@@ -842,7 +842,7 @@ std::variant<StandardCompiler::InputsAndSettings, Json::Value> StandardCompiler:
 					"Library address is not prefixed with \"0x\"."
 				);
 
-			if (address.length() != 42)
+			if (address.length() != 66)
 				return formatFatalError(
 					"JSONError",
 					"Library address is of invalid length."
@@ -850,7 +850,7 @@ std::variant<StandardCompiler::InputsAndSettings, Json::Value> StandardCompiler:
 
 			try
 			{
-				ret.libraries[sourceName + ":" + library] = util::h160(address);
+				ret.libraries[sourceName + ":" + library] = util::h32B(address);
 			}
 			catch (util::BadHexCharacter const&)
 			{

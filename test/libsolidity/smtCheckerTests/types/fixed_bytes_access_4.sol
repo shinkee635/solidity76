@@ -2,7 +2,7 @@ pragma experimental SMTChecker;
 
 contract C {
 	function f() public pure {
-		bytes32 x = 0x00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff;
+		bytes32 x = hex"00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff00ff";
 		byte z = 0x00;
 		byte o = 0xff;
 		assert(x[0] == z);
@@ -12,4 +12,4 @@ contract C {
 	}
 }
 // ----
-// Warning 6328: (260-281): CHC: Assertion violation happens here.\nCounterexample:\n\n\n\n\nTransaction trace:\nconstructor()\nf()
+// Warning 6328: (263-284): CHC: Assertion violation happens here.\nCounterexample:\n\n\n\n\nTransaction trace:\nconstructor()\nf()

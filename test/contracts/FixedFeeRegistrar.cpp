@@ -78,7 +78,7 @@ contract FixedFeeRegistrar is Registrar {
 
 	function reserve(string memory _name) public payable {
 		Record storage rec = m_record(_name);
-		if (rec.owner == 0x0000000000000000000000000000000000000000 && msg.value >= c_fee) {
+		if (rec.owner == 0x0000000000000000000000000000000000000000000000000000000000000000 && msg.value >= c_fee) {
 			rec.owner = msg.sender;
 			emit Changed(_name);
 		}
@@ -164,7 +164,7 @@ BOOST_AUTO_TEST_CASE(reserve)
 	BOOST_REQUIRE(callContractFunctionWithValue("reserve(string)", m_fee + 1, encodeDyn(name[1])) == encodeArgs());
 	BOOST_CHECK(callContractFunction("owner(string)", encodeDyn(name[1])) == encodeArgs(account(0)));
 	BOOST_REQUIRE(callContractFunctionWithValue("reserve(string)", m_fee - 1, encodeDyn(name[2])) == encodeArgs());
-	BOOST_CHECK(callContractFunction("owner(string)", encodeDyn(name[2])) == encodeArgs(h160{}));
+	BOOST_CHECK(callContractFunction("owner(string)", encodeDyn(name[2])) == encodeArgs(h32B{}));
 }
 
 BOOST_AUTO_TEST_CASE(double_reserve)
@@ -194,14 +194,14 @@ BOOST_AUTO_TEST_CASE(properties)
 		m_sender = account(0);
 		sendEther(account(count), 100 * ether);
 		m_sender = account(count);
-		h160 owner = m_sender;
+		h32B owner = m_sender;
 		// setting by sender works
 		BOOST_REQUIRE(callContractFunctionWithValue("reserve(string)", m_fee, encodeDyn(name)) == encodeArgs());
 		BOOST_CHECK(callContractFunction("owner(string)", encodeDyn(name)) == encodeArgs(owner));
 		BOOST_CHECK(callContractFunction("setAddr(string,address)", u256(0x40), u256(addr), u256(name.length()), name) == encodeArgs());
 		BOOST_CHECK(callContractFunction("addr(string)", encodeDyn(name)) == encodeArgs(addr));
-		BOOST_CHECK(callContractFunction("setSubRegistrar(string,address)", u256(0x40), addr + 20, u256(name.length()), name) == encodeArgs());
-		BOOST_CHECK(callContractFunction("subRegistrar(string)", encodeDyn(name)) == encodeArgs(addr + 20));
+		BOOST_CHECK(callContractFunction("setSubRegistrar(string,address)", u256(0x40), addr + 32, u256(name.length()), name) == encodeArgs());
+		BOOST_CHECK(callContractFunction("subRegistrar(string)", encodeDyn(name)) == encodeArgs(addr + 32));
 		BOOST_CHECK(callContractFunction("setContent(string,bytes32)", u256(0x40), addr + 90, u256(name.length()), name) == encodeArgs());
 		BOOST_CHECK(callContractFunction("content(string)", encodeDyn(name)) == encodeArgs(addr + 90));
 		count++;
@@ -212,8 +212,8 @@ BOOST_AUTO_TEST_CASE(properties)
 		BOOST_CHECK(callContractFunction("owner(string)", encodeDyn(name)) == encodeArgs(owner));
 		BOOST_CHECK(callContractFunction("setAddr(string,address)", u256(0x40), addr + 1, u256(name.length()), name) == encodeArgs());
 		BOOST_CHECK(callContractFunction("addr(string)", encodeDyn(name)) == encodeArgs(addr));
-		BOOST_CHECK(callContractFunction("setSubRegistrar(string,address)", u256(0x40), addr + 20 + 1, u256(name.length()), name) == encodeArgs());
-		BOOST_CHECK(callContractFunction("subRegistrar(string)", encodeDyn(name)) == encodeArgs(addr + 20));
+		BOOST_CHECK(callContractFunction("setSubRegistrar(string,address)", u256(0x40), addr + 32 + 1, u256(name.length()), name) == encodeArgs());
+		BOOST_CHECK(callContractFunction("subRegistrar(string)", encodeDyn(name)) == encodeArgs(addr + 32));
 		BOOST_CHECK(callContractFunction("setContent(string,bytes32)", u256(0x40), addr + 90 + 1, u256(name.length()), name) == encodeArgs());
 		BOOST_CHECK(callContractFunction("content(string)", encodeDyn(name)) == encodeArgs(addr + 90));
 		count++;
@@ -240,9 +240,9 @@ BOOST_AUTO_TEST_CASE(disown)
 	BOOST_CHECK(callContractFunction("setAddr(string,address)", u256(0x40), u256(124), u256(name.length()), name) == encodeArgs());
 	BOOST_CHECK(callContractFunction("setSubRegistrar(string,address)", u256(0x40), u256(125), u256(name.length()), name) == encodeArgs());
 
-	BOOST_CHECK_EQUAL(balanceAt(h160(0x124)), 0);
+	BOOST_CHECK_EQUAL(balanceAt(h32B(0x124)), 0);
 	BOOST_CHECK(callContractFunction("disown(string,address)", u256(0x40), u256(0x124), name.size(), name) == encodeArgs());
-	BOOST_CHECK_EQUAL(balanceAt(h160(0x124)), m_fee);
+	BOOST_CHECK_EQUAL(balanceAt(h32B(0x124)), m_fee);
 
 	BOOST_CHECK(callContractFunction("owner(string)", encodeDyn(name)) == encodeArgs(u256(0)));
 	BOOST_CHECK(callContractFunction("content(string)", encodeDyn(name)) == encodeArgs(u256(0)));

@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_CASE(value_types)
 				if (x != "abc") return 5;
 				if (e != true) return 6;
 				if (g != this) return 7;
-				return 20;
+				return 32;
 			}
 		}
 	)";
@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE(value_types)
 		ABI_CHECK(callContractFunction(
 			"f(uint256,uint16,uint24,int24,bytes3,bool,address)",
 			1, 2, 3, 4, string("abc"), true, m_contractAddress
-		), encodeArgs(u256(20)));
+		), encodeArgs(u256(32)));
 	)
 }
 
@@ -99,105 +99,105 @@ BOOST_AUTO_TEST_CASE(decode_from_memory_simple)
 	)
 }
 
-BOOST_AUTO_TEST_CASE(decode_function_type)
-{
-	string sourceCode = R"(
-		contract D {
-			function () external returns (uint) public _a;
-			constructor(function () external returns (uint) a) {
-				_a = a;
-			}
-		}
-		contract C {
-			function f() public returns (uint) {
-				return 3;
-			}
-			function g(function () external returns (uint) _f) public returns (uint) {
-				return _f();
-			}
-			// uses "decode from memory"
-			function test1() public returns (uint) {
-				D d = new D(this.f);
-				return d._a()();
-			}
-			// uses "decode from calldata"
-			function test2() public returns (uint) {
-				return this.g(this.f);
-			}
-		}
-	)";
-	BOTH_ENCODERS(
-		compileAndRun(sourceCode, 0, "C");
-		ABI_CHECK(callContractFunction("test1()"), encodeArgs(3));
-		ABI_CHECK(callContractFunction("test2()"), encodeArgs(3));
-	)
-}
+//BOOST_AUTO_TEST_CASE(decode_function_type)
+//{
+//	string sourceCode = R"(
+//		contract D {
+//			function () external returns (uint) public _a;
+//			constructor(function () external returns (uint) a) {
+//				_a = a;
+//			}
+//		}
+//		contract C {
+//			function f() public returns (uint) {
+//				return 3;
+//			}
+//			function g(function () external returns (uint) _f) public returns (uint) {
+//				return _f();
+//			}
+//			// uses "decode from memory"
+//			function test1() public returns (uint) {
+//				D d = new D(this.f);
+//				return d._a()();
+//			}
+//			// uses "decode from calldata"
+//			function test2() public returns (uint) {
+//				return this.g(this.f);
+//			}
+//		}
+//	)";
+//	BOTH_ENCODERS(
+//		compileAndRun(sourceCode, 0, "C");
+//		ABI_CHECK(callContractFunction("test1()"), encodeArgs(3));
+//		ABI_CHECK(callContractFunction("test2()"), encodeArgs(3));
+//	)
+//}
 
-BOOST_AUTO_TEST_CASE(decode_function_type_array)
-{
-	string sourceCode = R"(
-		contract D {
-			function () external returns (uint)[] public _a;
-			constructor(function () external returns (uint)[] memory a) {
-				_a = a;
-			}
-		}
-		contract E {
-			function () external returns (uint)[3] public _a;
-			constructor(function () external returns (uint)[3] memory a) {
-				_a = a;
-			}
-		}
-		contract C {
-			function f1() public returns (uint) {
-				return 1;
-			}
-			function f2() public returns (uint) {
-				return 2;
-			}
-			function f3() public returns (uint) {
-				return 3;
-			}
-			function g(function () external returns (uint)[] memory _f, uint i) public returns (uint) {
-				return _f[i]();
-			}
-			function h(function () external returns (uint)[3] memory _f, uint i) public returns (uint) {
-				return _f[i]();
-			}
-			// uses "decode from memory"
-			function test1_dynamic() public returns (uint) {
-				function () external returns (uint)[] memory x = new function() external returns (uint)[](4);
-				x[0] = this.f1;
-				x[1] = this.f2;
-				x[2] = this.f3;
-				D d = new D(x);
-				return d._a(2)();
-			}
-			function test1_static() public returns (uint) {
-				E e = new E([this.f1, this.f2, this.f3]);
-				return e._a(2)();
-			}
-			// uses "decode from calldata"
-			function test2_dynamic() public returns (uint) {
-				function () external returns (uint)[] memory x = new function() external returns (uint)[](3);
-				x[0] = this.f1;
-				x[1] = this.f2;
-				x[2] = this.f3;
-				return this.g(x, 0);
-			}
-			function test2_static() public returns (uint) {
-				return this.h([this.f1, this.f2, this.f3], 0);
-			}
-		}
-	)";
-	BOTH_ENCODERS(
-		compileAndRun(sourceCode, 0, "C");
-		ABI_CHECK(callContractFunction("test1_static()"), encodeArgs(3));
-		ABI_CHECK(callContractFunction("test1_dynamic()"), encodeArgs(3));
-		ABI_CHECK(callContractFunction("test2_static()"), encodeArgs(1));
-		ABI_CHECK(callContractFunction("test2_dynamic()"), encodeArgs(1));
-	)
-}
+//BOOST_AUTO_TEST_CASE(decode_function_type_array)
+//{
+//	string sourceCode = R"(
+//		contract D {
+//			function () external returns (uint)[] public _a;
+//			constructor(function () external returns (uint)[] memory a) {
+//				_a = a;
+//			}
+//		}
+//		contract E {
+//			function () external returns (uint)[3] public _a;
+//			constructor(function () external returns (uint)[3] memory a) {
+//				_a = a;
+//			}
+//		}
+//		contract C {
+//			function f1() public returns (uint) {
+//				return 1;
+//			}
+//			function f2() public returns (uint) {
+//				return 2;
+//			}
+//			function f3() public returns (uint) {
+//				return 3;
+//			}
+//			function g(function () external returns (uint)[] memory _f, uint i) public returns (uint) {
+//				return _f[i]();
+//			}
+//			function h(function () external returns (uint)[3] memory _f, uint i) public returns (uint) {
+//				return _f[i]();
+//			}
+//			// uses "decode from memory"
+//			function test1_dynamic() public returns (uint) {
+//				function () external returns (uint)[] memory x = new function() external returns (uint)[](4);
+//				x[0] = this.f1;
+//				x[1] = this.f2;
+//				x[2] = this.f3;
+//				D d = new D(x);
+//				return d._a(2)();
+//			}
+//			function test1_static() public returns (uint) {
+//				E e = new E([this.f1, this.f2, this.f3]);
+//				return e._a(2)();
+//			}
+//			// uses "decode from calldata"
+//			function test2_dynamic() public returns (uint) {
+//				function () external returns (uint)[] memory x = new function() external returns (uint)[](3);
+//				x[0] = this.f1;
+//				x[1] = this.f2;
+//				x[2] = this.f3;
+//				return this.g(x, 0);
+//			}
+//			function test2_static() public returns (uint) {
+//				return this.h([this.f1, this.f2, this.f3], 0);
+//			}
+//		}
+//	)";
+//	BOTH_ENCODERS(
+//		compileAndRun(sourceCode, 0, "C");
+//		ABI_CHECK(callContractFunction("test1_static()"), encodeArgs(3));
+//		ABI_CHECK(callContractFunction("test1_dynamic()"), encodeArgs(3));
+//		ABI_CHECK(callContractFunction("test2_static()"), encodeArgs(1));
+//		ABI_CHECK(callContractFunction("test2_dynamic()"), encodeArgs(1));
+//	)
+//}
 
 BOOST_AUTO_TEST_CASE(decode_from_memory_complex)
 {

@@ -103,7 +103,7 @@ evmc::result deployContract(EVMHost& _hostContext, bytes const& _code)
 std::pair<bytes, Json::Value> compileContract(
 	std::string _sourceCode,
 	std::string _contractName,
-	std::map<std::string, solidity::util::h160> const& _libraryAddresses = {},
+	std::map<std::string, solidity::util::h32B> const& _libraryAddresses = {},
 	frontend::OptimiserSettings _optimization = frontend::OptimiserSettings::minimal()
 )
 {
@@ -158,7 +158,7 @@ evmc::result compileDeployAndExecute(
 	// We target the default EVM which is the latest
 	langutil::EVMVersion version = {};
 	EVMHost hostContext(version, evmone);
-	std::map<std::string, solidity::util::h160> _libraryAddressMap;
+	std::map<std::string, solidity::util::h256> _libraryAddressMap;
 
 	// First deploy library
 	if (!_libraryName.empty())

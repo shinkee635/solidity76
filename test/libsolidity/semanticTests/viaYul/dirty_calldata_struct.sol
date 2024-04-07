@@ -9,7 +9,7 @@ contract C {
         assembly {
             r := x
         }
-        correct = r == 0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff80;
+        correct = r == uint256(0x00ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff80);
     }
 }
 // ====

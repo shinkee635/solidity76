@@ -82,8 +82,7 @@ void ExecutionFramework::reset()
 {
 	m_evmcHost->reset();
 	for (size_t i = 0; i < 10; i++)
-		m_evmcHost->accounts[EVMHost::convertToEVMC(account(i))].balance =
-			EVMHost::convertToEVMC(u256(1) << 100);
+		m_evmcHost->accounts[EVMHost::convertAddressToEVMC(account(i))].balance = EVMHost::convertToEVMC(u256(1) << 100);
 }
 
 std::pair<bool, string> ExecutionFramework::compareAndCreateMessage(
@@ -154,18 +153,18 @@ void ExecutionFramework::sendMessage(bytes const& _data, bool _isCreation, u256 
 	evmc_message message = {};
 	message.input_data = _data.data();
 	message.input_size = _data.size();
-	message.sender = EVMHost::convertToEVMC(m_sender);
+	message.sender = EVMHost::convertAddressToEVMC(m_sender);
 	message.value = EVMHost::convertToEVMC(_value);
 
 	if (_isCreation)
 	{
 		message.kind = EVMC_CREATE;
-		message.destination = EVMHost::convertToEVMC(h160{});
+		message.destination = EVMHost::convertAddressToEVMC(h32B{});
 	}
 	else
 	{
 		message.kind = EVMC_CALL;
-		message.destination = EVMHost::convertToEVMC(m_contractAddress);
+		message.destination = EVMHost::convertAddressToEVMC(m_contractAddress);
 	}
 	message.gas = m_gas.convert_to<int64_t>();
 
@@ -173,7 +172,7 @@ void ExecutionFramework::sendMessage(bytes const& _data, bool _isCreation, u256 
 
 	m_output = bytes(result.output_data, result.output_data + result.output_size);
 	if (_isCreation)
-		m_contractAddress = EVMHost::convertFromEVMC(result.create_address);
+		m_contractAddress = EVMHost::convertAddressFromEVMC(result.create_address);
 
 	m_gasUsed = m_gas - result.gas_left;
 	m_transactionSuccessful = (result.status_code == EVMC_SUCCESS);
@@ -186,7 +185,7 @@ void ExecutionFramework::sendMessage(bytes const& _data, bool _isCreation, u256 
 	}
 }
 
-void ExecutionFramework::sendEther(h160 const& _addr, u256 const& _amount)
+void ExecutionFramework::sendEther(h32B const& _addr, u256 const& _amount)
 {
 	m_evmcHost->newBlock();
 
@@ -197,10 +196,10 @@ void ExecutionFramework::sendEther(h160 const& _addr, u256 const& _amount)
 			cout << " value: " << _amount << endl;
 	}
 	evmc_message message = {};
-	message.sender = EVMHost::convertToEVMC(m_sender);
+	message.sender = EVMHost::convertAddressToEVMC(m_sender);
 	message.value = EVMHost::convertToEVMC(_amount);
 	message.kind = EVMC_CALL;
-	message.destination = EVMHost::convertToEVMC(_addr);
+	message.destination = EVMHost::convertAddressToEVMC(_addr);
 	message.gas = m_gas.convert_to<int64_t>();
 
 	m_evmcHost->call(message);
@@ -219,14 +218,14 @@ size_t ExecutionFramework::blockTimestamp(u256 _block)
 		return static_cast<size_t>((currentTimestamp() / blockNumber()) * _block);
 }
 
-h160 ExecutionFramework::account(size_t _idx)
+h32B ExecutionFramework::account(size_t _idx)
 {
-	return h160(h256(u256{"0x1212121212121212121212121212120000000012"} + _idx * 0x1000), h160::AlignRight);
+	return h32B(h256(u256{"0x1212121212121212121212121212120000000000000000000000000000000012"} + _idx * 0x1000), h32B::AlignRight);
 }
 
-bool ExecutionFramework::addressHasCode(h160 const& _addr)
+bool ExecutionFramework::addressHasCode(h32B const& _addr)
 {
-	return m_evmcHost->get_code_size(EVMHost::convertToEVMC(_addr)) != 0;
+	return m_evmcHost->get_code_size(EVMHost::convertAddressToEVMC(_addr)) != 0;
 }
 
 size_t ExecutionFramework::numLogs() const
@@ -244,9 +243,9 @@ h256 ExecutionFramework::logTopic(size_t _logIdx, size_t _topicIdx) const
 	return EVMHost::convertFromEVMC(m_evmcHost->recorded_logs.at(_logIdx).topics.at(_topicIdx));
 }
 
-h160 ExecutionFramework::logAddress(size_t _logIdx) const
+h32B ExecutionFramework::logAddress(size_t _logIdx) const
 {
-	return EVMHost::convertFromEVMC(m_evmcHost->recorded_logs.at(_logIdx).creator);
+	return EVMHost::convertAddressFromEVMC(m_evmcHost->recorded_logs.at(_logIdx).creator);
 }
 
 bytes ExecutionFramework::logData(size_t _logIdx) const
@@ -257,14 +256,14 @@ bytes ExecutionFramework::logData(size_t _logIdx) const
 	return {data.begin(), data.end()};
 }
 
-u256 ExecutionFramework::balanceAt(h160 const& _addr)
+u256 ExecutionFramework::balanceAt(h32B const& _addr)
 {
-	return u256(EVMHost::convertFromEVMC(m_evmcHost->get_balance(EVMHost::convertToEVMC(_addr))));
+	return u256(EVMHost::convertFromEVMC(m_evmcHost->get_balance(EVMHost::convertAddressToEVMC(_addr))));
 }
 
-bool ExecutionFramework::storageEmpty(h160 const& _addr)
+bool ExecutionFramework::storageEmpty(h32B const& _addr)
 {
-	const auto it = m_evmcHost->accounts.find(EVMHost::convertToEVMC(_addr));
+	const auto it = m_evmcHost->accounts.find(EVMHost::convertAddressToEVMC(_addr));
 	if (it != m_evmcHost->accounts.end())
 	{
 		for (auto const& entry: it->second.storage)

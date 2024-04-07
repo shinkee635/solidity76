@@ -85,6 +85,11 @@ bool isFixedBytes(string const& _type)
 	return regex_match(_type, regex{"bytes\\d+"});
 }
 
+bool isAddress(string const& _type)
+{
+	return _type == "address";
+}
+
 bool isBytes(string const& _type)
 {
 	return regex_match(_type, regex{"\\bbytes\\b"});
@@ -207,7 +212,7 @@ bool ContractABIUtils::appendTypesFromName(
 		_inplaceTypes.push_back(ABIType{ABIType::UnsignedDec});
 	else if (isInt(type))
 		_inplaceTypes.push_back(ABIType{ABIType::SignedDec});
-	else if (isFixedBytes(type))
+	else if (isFixedBytes(type) || isAddress(type))
 		_inplaceTypes.push_back(ABIType{ABIType::Hex});
 	else if (isString(type))
 	{

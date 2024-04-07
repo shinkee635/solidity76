@@ -118,7 +118,7 @@ function test_solc_behaviour()
         # Remove bytecode (but not linker references).
         sed -i.bak -E -e 's/(\"object\":\")[0-9a-f]+([^"]*\")/\1<BYTECODE REMOVED>\2/g' "$stdout_path"
         sed -i.bak -E -e 's/(\"object\":\"[^"]+\$__)[0-9a-f]+(\")/\1<BYTECODE REMOVED>\2/g' "$stdout_path"
-        sed -i.bak -E -e 's/([0-9a-f]{34}\$__)[0-9a-f]+(__\$[0-9a-f]{17})/\1<BYTECODE REMOVED>\2/g' "$stdout_path"
+        sed -i.bak -E -e 's/([0-9a-f]{58}\$__)[0-9a-f]+(__\$[0-9a-f]{29})/\1<BYTECODE REMOVED>\2/g' "$stdout_path"
 
         # Replace escaped newlines by actual newlines for readability
         sed -i.bak -E -e 's/\\n/\'$'\n/g' "$stdout_path"
@@ -137,8 +137,8 @@ function test_solc_behaviour()
         # 64697066735822 = hex encoding of 0x64 'i' 'p' 'f' 's' 0x58 0x22
         # 64736f6c63     = hex encoding of 0x64 's' 'o' 'l' 'c'
         sed -i.bak -E -e 's/[0-9a-f]*64697066735822[0-9a-f]+64736f6c63[0-9a-f]+/<BYTECODE REMOVED>/g' "$stdout_path"
-        sed -i.bak -E -e 's/([0-9a-f]{17}\$__)[0-9a-f]+(__\$[0-9a-f]{17})/\1<BYTECODE REMOVED>\2/g' "$stdout_path"
-        sed -i.bak -E -e 's/[0-9a-f]+((__\$[0-9a-f]{34}\$__)*<BYTECODE REMOVED>)/<BYTECODE REMOVED>\1/g' "$stdout_path"
+        sed -i.bak -E -e 's/([0-9a-f]{29}\$__)[0-9a-f]+(__\$[0-9a-f]{29})/\1<BYTECODE REMOVED>\2/g' "$stdout_path"
+        sed -i.bak -E -e 's/[0-9a-f]+((__\$[0-9a-f]{58}\$__)*<BYTECODE REMOVED>)/<BYTECODE REMOVED>\1/g' "$stdout_path"
 
         # Remove trailing empty lines. Needs a line break to make OSX sed happy.
         sed -i.bak -e '1{/^$/d
@@ -354,11 +354,11 @@ rm -rf "$SOLTMPDIR"
 echo "Done."
 
 printTask "Testing library checksum..."
-echo '' | "$SOLC" - --link --libraries a:0x90f20564390eAe531E810af625A22f51385Cd222 >/dev/null
-! echo '' | "$SOLC" - --link --libraries a:0x80f20564390eAe531E810af625A22f51385Cd222 &>/dev/null
+echo '' | "$SOLC" - --link --libraries a:0x90f20564390eAe531E810AF625a22f51385Cd222123456789012345678901234 >/dev/null
+! echo '' | "$SOLC" - --link --libraries a:0x80f20564390eAe531E810af625A22f51385Cd222123456789012345678901234 &>/dev/null
 
 printTask "Testing long library names..."
-echo '' | "$SOLC" - --link --libraries aveeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeerylonglibraryname:0x90f20564390eAe531E810af625A22f51385Cd222 >/dev/null
+echo '' | "$SOLC" - --link --libraries aveeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeerylonglibraryname:0x90f20564390eAe531E810AF625a22f51385Cd222123456789012345678901234 >/dev/null
 
 printTask "Testing linking itself..."
 SOLTMPDIR=$(mktemp -d)
@@ -372,7 +372,7 @@ SOLTMPDIR=$(mktemp -d)
     # But not in library file.
     grep -q -v '[/_]' L.bin
     # Now link
-    "$SOLC" --link --libraries x.sol:L:0x90f20564390eAe531E810af625A22f51385Cd222 C.bin
+    "$SOLC" --link --libraries x.sol:L:0x90f20564390eAe531E810AF625a22f51385Cd222123456789012345678901234 C.bin
     # Now the placeholder and explanation should be gone.
     grep -q -v '[/_]' C.bin
 )

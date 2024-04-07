@@ -147,7 +147,7 @@ as topics. The event call above can be performed in the same way as
             uint256 _id = 0x420042;
             log3(
                 bytes32(msg.value),
-                bytes32(0x50cb9fe53daa9737b786ab3646f04d0150dc50ef4e75f59509d83667ad5adb20),
+                bytes32(0x50cb9Fe53DAA9737b786AB3646f04D0150Dc50eF4e75f59509d83667aD5Adb20),
                 bytes32(uint256(msg.sender)),
                 bytes32(_id)
             );

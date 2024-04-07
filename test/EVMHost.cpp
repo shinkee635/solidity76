@@ -125,9 +125,9 @@ EVMHost::EVMHost(langutil::EVMVersion _evmVersion, evmc::VM& _vm):
 
 	tx_context.block_difficulty = evmc::uint256be{200000000};
 	tx_context.block_gas_limit = 20000000;
-	tx_context.block_coinbase = 0x7878787878787878787878787878787878787878_address;
+	tx_context.block_coinbase = 0x7878787878787878787878787878787878787878787878787878787878787878_address;
 	tx_context.tx_gas_price = evmc::uint256be{3000000000};
-	tx_context.tx_origin = 0x9292929292929292929292929292929292929292_address;
+	tx_context.tx_origin = 0x9292929292929292929292929292929292929292929292929292929292929292_address;
 	// Mainnet according to EIP-155
 	tx_context.chain_id = evmc::uint256be{1};
 
@@ -166,21 +166,29 @@ void EVMHost::selfdestruct(const evmc::address& _addr, const evmc::address& _ben
 
 evmc::result EVMHost::call(evmc_message const& _message) noexcept
 {
-	if (_message.destination == 0x0000000000000000000000000000000000000001_address)
+	if (_message.destination == 0x0000000000000000000000000000000000000000000000000000000000000001_address)
 		return precompileECRecover(_message);
-	else if (_message.destination == 0x0000000000000000000000000000000000000002_address)
+	else if (_message.destination == 0x0000000000000000000000000000000000000000000000000000000000000002_address)
 		return precompileSha256(_message);
-	else if (_message.destination == 0x0000000000000000000000000000000000000003_address)
+	else if (_message.destination == 0x0000000000000000000000000000000000000000000000000000000000000003_address)
 		return precompileRipeMD160(_message);
-	else if (_message.destination == 0x0000000000000000000000000000000000000004_address)
+	else if (_message.destination == 0x0000000000000000000000000000000000000000000000000000000000000004_address)
 		return precompileIdentity(_message);
-	else if (_message.destination == 0x0000000000000000000000000000000000000005_address && m_evmVersion >= langutil::EVMVersion::byzantium())
+	else if (
+		_message.destination == 0x0000000000000000000000000000000000000000000000000000000000000005_address
+		&& m_evmVersion >= langutil::EVMVersion::byzantium())
 		return precompileModExp(_message);
-	else if (_message.destination == 0x0000000000000000000000000000000000000006_address && m_evmVersion >= langutil::EVMVersion::byzantium())
+	else if (
+		_message.destination == 0x0000000000000000000000000000000000000000000000000000000000000006_address
+		&& m_evmVersion >= langutil::EVMVersion::byzantium())
 		return precompileALTBN128G1Add(_message);
-	else if (_message.destination == 0x0000000000000000000000000000000000000007_address && m_evmVersion >= langutil::EVMVersion::byzantium())
+	else if (
+		_message.destination == 0x0000000000000000000000000000000000000000000000000000000000000007_address
+		&& m_evmVersion >= langutil::EVMVersion::byzantium())
 		return precompileALTBN128G1Mul(_message);
-	else if (_message.destination == 0x0000000000000000000000000000000000000008_address && m_evmVersion >= langutil::EVMVersion::byzantium())
+	else if (
+		_message.destination == 0x0000000000000000000000000000000000000000000000000000000000000008_address
+		&& m_evmVersion >= langutil::EVMVersion::byzantium())
 		return precompileALTBN128PairingProduct(_message);
 
 	auto const stateBackup = accounts;
@@ -209,22 +217,22 @@ evmc::result EVMHost::call(evmc_message const& _message) noexcept
 	{
 		// TODO this is not the right formula
 		// TODO is the nonce incremented on failure, too?
-		h160 createAddress(keccak256(
+		h32B createAddress(keccak256(
 			bytes(begin(message.sender.bytes), end(message.sender.bytes)) +
 			asBytes(to_string(sender.nonce++))
 		));
-		message.destination = convertToEVMC(createAddress);
+		message.destination = convertAddressToEVMC(createAddress);
 		code = evmc::bytes(message.input_data, message.input_data + message.input_size);
 	}
 	else if (message.kind == EVMC_CREATE2)
 	{
-		h160 createAddress(keccak256(
+		h32B createAddress(keccak256(
 			bytes(1, 0xff) +
 			bytes(begin(message.sender.bytes), end(message.sender.bytes)) +
 			bytes(begin(message.create2_salt.bytes), end(message.create2_salt.bytes)) +
 			keccak256(bytes(message.input_data, message.input_data + message.input_size)).asBytes()
 		));
-		message.destination = convertToEVMC(createAddress);
+		message.destination = convertAddressToEVMC(createAddress);
 		if (accounts.count(message.destination) && (
 			accounts[message.destination].nonce > 0 ||
 			!accounts[message.destination].code.empty()
@@ -292,15 +300,15 @@ evmc::bytes32 EVMHost::get_block_hash(int64_t _number) const noexcept
 	return convertToEVMC(u256("0x3737373737373737373737373737373737373737373737373737373737373737") + _number);
 }
 
-h160 EVMHost::convertFromEVMC(evmc::address const& _addr)
+h32B EVMHost::convertAddressFromEVMC(evmc::address const& _addr)
 {
-	return h160(bytes(begin(_addr.bytes), end(_addr.bytes)));
+	return h32B(bytes(begin(_addr.bytes), end(_addr.bytes)));
 }
 
-evmc::address EVMHost::convertToEVMC(h160 const& _addr)
+evmc::address EVMHost::convertAddressToEVMC(h32B const& _addr)
 {
 	evmc::address a;
-	for (unsigned i = 0; i < 20; ++i)
+	for (unsigned i = 0; i < 32; ++i)
 		a.bytes[i] = _addr[i];
 	return a;
 }

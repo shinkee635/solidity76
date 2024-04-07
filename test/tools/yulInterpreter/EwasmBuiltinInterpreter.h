@@ -119,13 +119,17 @@ private:
 	void writeU128(uint64_t _offset, u256 _value) { writeU256(_offset, std::move(_value), 16); }
 	/// Helper for eth.* builtins. Writes to memory (as a byte string).
 	void writeBytes32(uint64_t _offset, util::h256 _value) { accessMemory(_offset, 32); writeMemory(_offset, _value.asBytes()); }
-	void writeAddress(uint64_t _offset, util::h160 _value) { accessMemory(_offset, 20); writeMemory(_offset, _value.asBytes()); }
+	void writeAddress(uint64_t _offset, util::h32B _value)
+	{
+		accessMemory(_offset, 32);
+		writeMemory(_offset, _value.asBytes());
+	}
 	/// Helper for eth.* builtins. Reads from memory (little-endian) and returns the value.
 	u256 readU256(uint64_t _offset, size_t _croppedTo = 32);
 	u256 readU128(uint64_t _offset) { return readU256(_offset, 16); }
 	/// Helper for eth.* builtins. Reads from memory (as a byte string).
 	util::h256 readBytes32(uint64_t _offset) { accessMemory(_offset, 32); return util::h256(readMemory(_offset, 32)); }
-	util::h160 readAddress(uint64_t _offset) { accessMemory(_offset, 20); return util::h160(readMemory(_offset, 20)); }
+	util::h32B readAddress(uint64_t _offset) { accessMemory(_offset, 32); return util::h32B(readMemory(_offset, 32)); }
 
 	void logTrace(evmasm::Instruction _instruction, std::vector<u256> const& _arguments = {}, bytes const& _data = {});
 	/// Appends a log to the trace representing an instruction or similar operation by string,

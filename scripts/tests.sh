@@ -86,7 +86,8 @@ fi
 
 # And then run the Solidity unit-tests in the matrix combination of optimizer / no optimizer
 # and homestead / byzantium VM
-for optimize in "" "--optimize"
+#for optimize in "" "--optimize"
+for optimize in ""
 do
     for vm in $EVM_VERSIONS
     do

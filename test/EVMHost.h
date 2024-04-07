@@ -34,7 +34,7 @@
 
 namespace solidity::test
 {
-using Address = util::h160;
+using Address = util::h32B;
 
 class EVMHost: public evmc::MockedHost
 {
@@ -73,8 +73,8 @@ public:
 
 	evmc::bytes32 get_block_hash(int64_t number) const noexcept final;
 
-	static Address convertFromEVMC(evmc::address const& _addr);
-	static evmc::address convertToEVMC(Address const& _addr);
+	static Address convertAddressFromEVMC(evmc::address const& _addr);
+	static evmc::address convertAddressToEVMC(Address const& _addr);
 	static util::h256 convertFromEVMC(evmc::bytes32 const& _data);
 	static evmc::bytes32 convertToEVMC(util::h256 const& _data);
 

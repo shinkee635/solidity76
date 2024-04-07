@@ -128,7 +128,7 @@ bool solidity::util::passesAddressChecksum(string const& _str, bool _strict)
 {
 	string s = _str.substr(0, 2) == "0x" ? _str : "0x" + _str;
 
-	if (s.length() != 42)
+	if (s.length() != 66)
 		return false;
 
 	if (!_strict && (
@@ -143,13 +143,13 @@ bool solidity::util::passesAddressChecksum(string const& _str, bool _strict)
 string solidity::util::getChecksummedAddress(string const& _addr)
 {
 	string s = _addr.substr(0, 2) == "0x" ? _addr.substr(2) : _addr;
-	assertThrow(s.length() == 40, InvalidAddress, "");
+	assertThrow(s.length() == 64, InvalidAddress, "");
 	assertThrow(s.find_first_not_of("0123456789abcdefABCDEF") == string::npos, InvalidAddress, "");
 
 	h256 hash = keccak256(boost::algorithm::to_lower_copy(s, std::locale::classic()));
 
 	string ret = "0x";
-	for (unsigned i = 0; i < 40; ++i)
+	for (unsigned i = 0; i < 64; ++i)
 	{
 		char addressCharacter = s[i];
 		uint8_t nibble = hash[i / 2u] >> (4u * (1u - (i % 2u))) & 0xf;

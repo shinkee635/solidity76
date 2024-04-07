@@ -228,14 +228,14 @@ size_t ContractCompiler::deployLibrary(ContractDefinition const& _contract)
 	// This code replaces the address added by appendDeployTimeAddress().
 	m_context.appendInlineAssembly(R"(
 	{
-		// If code starts at 11, an mstore(0) writes to the full PUSH20 plus data
+		// If code starts at 0, an mstore(0) writes to the full PUSH32 plus data
 		// without the need for a shift.
-		let codepos := 11
+		let codepos := 0
 		codecopy(codepos, subOffset, subSize)
-		// Check that the first opcode is a PUSH20
-		if iszero(eq(0x73, byte(0, mload(codepos)))) { invalid() }
-		mstore(0, address())
-		mstore8(codepos, 0x73)
+		// Check that the first opcode is a PUSH32
+		if iszero(eq(0x7f, byte(0, mload(codepos)))) { invalid() }
+		mstore(1, address())
+		mstore8(codepos, 0x7f)
 		return(codepos, subSize)
 	}
 	)", {"subSize", "subOffset"});
@@ -297,7 +297,7 @@ void ContractCompiler::appendConstructor(FunctionDefinition const& _constructor)
 void ContractCompiler::appendDelegatecallCheck()
 {
 	// Special constant that will be replaced by the address at deploy time.
-	// At compilation time, this is just "PUSH20 00...000".
+	// At compilation time, this is just "PUSH32 00...000".
 	m_context.appendDeployTimeAddress();
 	m_context << Instruction::ADDRESS << Instruction::EQ;
 	// The result on the stack is
