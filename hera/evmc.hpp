@@ -42,6 +42,18 @@ struct address : evmc_address
                       0,
                       0,
                       0,
+		      0,
+		      0,
+		      0,
+		      0,
+		      0,
+		      0,
+		      0,
+		      0,
+		      0,
+		      0,
+		      0,
+		      0,
                       static_cast<uint8_t>(v >> 56),
                       static_cast<uint8_t>(v >> 48),
                       static_cast<uint8_t>(v >> 40),
@@ -147,7 +159,8 @@ constexpr bool operator==(const address& a, const address& b) noexcept
     // TODO: Report bug in clang keeping unnecessary bswap.
     return load64be(&a.bytes[0]) == load64be(&b.bytes[0]) &&
            load64be(&a.bytes[8]) == load64be(&b.bytes[8]) &&
-           load32be(&a.bytes[16]) == load32be(&b.bytes[16]);
+           load64be(&a.bytes[16]) == load64be(&b.bytes[16]) &&
+           load64be(&a.bytes[24]) == load64be(&b.bytes[24]);
 }
 
 /// The "not equal to" comparison operator for the evmc::address type.
@@ -163,7 +176,9 @@ constexpr bool operator<(const address& a, const address& b) noexcept
            (load64be(&a.bytes[0]) == load64be(&b.bytes[0]) &&
             (load64be(&a.bytes[8]) < load64be(&b.bytes[8]) ||
              (load64be(&a.bytes[8]) == load64be(&b.bytes[8]) &&
-              load32be(&a.bytes[16]) < load32be(&b.bytes[16]))));
+              (load64be(&a.bytes[16]) < load64be(&b.bytes[16]) ||
+               (load64be(&a.bytes[16]) == load64be(&b.bytes[16]) &&
+                load64be(&a.bytes[24]) < load64be(&b.bytes[24]))))));
 }
 
 /// The "greater than" comparison operator for the evmc::address type.
@@ -291,7 +306,9 @@ constexpr address from_hex<address>(const char* s) noexcept
     return {
         {{byte(s, 0),  byte(s, 1),  byte(s, 2),  byte(s, 3),  byte(s, 4),  byte(s, 5),  byte(s, 6),
           byte(s, 7),  byte(s, 8),  byte(s, 9),  byte(s, 10), byte(s, 11), byte(s, 12), byte(s, 13),
-          byte(s, 14), byte(s, 15), byte(s, 16), byte(s, 17), byte(s, 18), byte(s, 19)}}};
+          byte(s, 14), byte(s, 15), byte(s, 16), byte(s, 17), byte(s, 18), byte(s, 19), byte(s, 20),
+          byte(s, 21), byte(s, 22), byte(s, 23), byte(s, 24), byte(s, 25), byte(s, 26), byte(s, 27),
+          byte(s, 28), byte(s, 29), byte(s, 30), byte(s, 31)}}};
 }
 
 template <typename T>

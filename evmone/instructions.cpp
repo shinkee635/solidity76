@@ -326,7 +326,7 @@ const instruction* op_address(const instruction* instr, execution_state& state) 
 const instruction* op_balance(const instruction* instr, execution_state& state) noexcept
 {
     auto& x = state.stack.top();
-    x = intx::be::load<uint256>(state.host.get_balance(intx::be::trunc<evmc::address>(x)));
+    x = intx::be::load<uint256>(state.host.get_balance(intx::be::store<evmc::address>(x)));
     return ++instr;
 }
 
@@ -601,13 +601,13 @@ const instruction* op_gasprice(const instruction* instr, execution_state& state)
 const instruction* op_extcodesize(const instruction* instr, execution_state& state) noexcept
 {
     auto& x = state.stack.top();
-    x = state.host.get_code_size(intx::be::trunc<evmc::address>(x));
+    x = state.host.get_code_size(intx::be::store<evmc::address>(x));
     return ++instr;
 }
 
 const instruction* op_extcodecopy(const instruction* instr, execution_state& state) noexcept
 {
-    const auto addr = intx::be::trunc<evmc::address>(state.stack.pop());
+    const auto addr = intx::be::store<evmc::address>(state.stack.pop());
     const auto mem_index = state.stack.pop();
     const auto input_index = state.stack.pop();
     const auto size = state.stack.pop();
@@ -667,7 +667,7 @@ const instruction* op_returndatacopy(const instruction* instr, execution_state& 
 const instruction* op_extcodehash(const instruction* instr, execution_state& state) noexcept
 {
     auto& x = state.stack.top();
-    x = intx::be::load<uint256>(state.host.get_code_hash(intx::be::trunc<evmc::address>(x)));
+    x = intx::be::load<uint256>(state.host.get_code_hash(intx::be::store<evmc::address>(x)));
     return ++instr;
 }
 
@@ -813,7 +813,7 @@ const instruction* op_call(const instruction* instr, execution_state& state) noe
 {
     const auto arg = instr->arg;
     auto gas = state.stack[0];
-    const auto dst = intx::be::trunc<evmc::address>(state.stack[1]);
+    const auto dst = intx::be::store<evmc::address>(state.stack[1]);
     auto value = state.stack[2];
     auto input_offset = state.stack[3];
     auto input_size = state.stack[4];
@@ -935,7 +935,7 @@ const instruction* op_delegatecall(const instruction* instr, execution_state& st
 {
     const auto arg = instr->arg;
     auto gas = state.stack[0];
-    const auto dst = intx::be::trunc<evmc::address>(state.stack[1]);
+    const auto dst = intx::be::store<evmc::address>(state.stack[1]);
     auto input_offset = state.stack[2];
     auto input_size = state.stack[3];
     auto output_offset = state.stack[4];
@@ -1004,7 +1004,7 @@ const instruction* op_staticcall(const instruction* instr, execution_state& stat
 {
     const auto arg = instr->arg;
     auto gas = state.stack[0];
-    const auto dst = intx::be::trunc<evmc::address>(state.stack[1]);
+    const auto dst = intx::be::store<evmc::address>(state.stack[1]);
     auto input_offset = state.stack[2];
     auto input_size = state.stack[3];
     auto output_offset = state.stack[4];
@@ -1197,7 +1197,7 @@ const instruction* op_selfdestruct(const instruction*, execution_state& state) n
     if (state.msg->flags & EVMC_STATIC)
         return state.exit(EVMC_STATIC_MODE_VIOLATION);
 
-    const auto addr = intx::be::trunc<evmc::address>(state.stack[0]);
+    const auto addr = intx::be::store<evmc::address>(state.stack[0]);
 
     if (state.rev >= EVMC_TANGERINE_WHISTLE)
     {

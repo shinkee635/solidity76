@@ -799,13 +799,13 @@ void WasmEngine::collectBenchmarkingData()
   evmc::address EthereumInterface::loadAddress(uint32_t srcOffset)
   {
     evmc::address dst;
-    loadMemory(srcOffset, dst.bytes, 20);
+    loadMemory(srcOffset, dst.bytes, 32);
     return dst;
   }
 
   void EthereumInterface::storeAddress(evmc::address const& src, uint32_t dstOffset)
   {
-    storeMemory(src.bytes, dstOffset, 20);
+    storeMemory(src.bytes, dstOffset, 32);
   }
 
   evmc::uint256be EthereumInterface::loadUint128(uint32_t srcOffset)

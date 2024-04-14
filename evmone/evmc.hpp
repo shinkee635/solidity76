@@ -82,7 +82,8 @@ constexpr bool operator==(const address& a, const address& b) noexcept
     // TODO: Report bug in clang keeping unnecessary bswap.
     return load64be(&a.bytes[0]) == load64be(&b.bytes[0]) &&
            load64be(&a.bytes[8]) == load64be(&b.bytes[8]) &&
-           load32be(&a.bytes[16]) == load32be(&b.bytes[16]);
+           load64be(&a.bytes[16]) == load64be(&b.bytes[16]) &&
+           load64be(&a.bytes[24]) == load64be(&b.bytes[24]);
 }
 
 /// The "not equal" comparison operator for the evmc::address type.
@@ -98,7 +99,9 @@ constexpr bool operator<(const address& a, const address& b) noexcept
            (load64be(&a.bytes[0]) == load64be(&b.bytes[0]) &&
             load64be(&a.bytes[8]) < load64be(&b.bytes[8])) ||
            (load64be(&a.bytes[8]) == load64be(&b.bytes[8]) &&
-            load32be(&a.bytes[16]) < load32be(&b.bytes[16]));
+            load64be(&a.bytes[16]) < load64be(&b.bytes[16])) ||
+           (load64be(&a.bytes[16]) == load64be(&b.bytes[16]) &&
+            load64be(&a.bytes[24]) < load64be(&b.bytes[24]));
 }
 
 /// The "equal" comparison operator for the evmc::bytes32 type.
