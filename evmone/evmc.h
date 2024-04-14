@@ -68,7 +68,7 @@ typedef struct evmc_bytes32 evmc_uint256be;
 typedef struct evmc_address
 {
     /** The 20 bytes of the hash. */
-    uint8_t bytes[32];
+    uint8_t bytes[20];
 } evmc_address;
 
 /** The kind of call-like instruction. */

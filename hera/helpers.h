@@ -189,7 +189,7 @@ static inline void evmc_release_result(struct evmc_result* result)
  */
 union evmc_result_optional_storage
 {
-    uint8_t bytes[36]; /**< 24 bytes of optional storage. */
+    uint8_t bytes[24]; /**< 24 bytes of optional storage. */
     void* pointer;     /**< Optional pointer. */
 };
 

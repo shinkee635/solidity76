@@ -98,9 +98,9 @@ struct hera_instance : evmc_vm {
 
 using namespace evmc::literals;
 
-constexpr auto sentinelAddress = 0x000000000000000000000000000000000000000000000000000000000000000a_address;
-constexpr auto evm2wasmAddress = 0x000000000000000000000000000000000000000000000000000000000000000b_address;
-constexpr auto runevmAddress = 0x000000000000000000000000000000000000000000000000000000000000000c_address;
+constexpr auto sentinelAddress = 0x000000000000000000000000000000000000000a_address;
+constexpr auto evm2wasmAddress = 0x000000000000000000000000000000000000000b_address;
+constexpr auto runevmAddress = 0x000000000000000000000000000000000000000c_address;
 
 // Calls a system contract at @address with input data @input.
 // It is a "staticcall" with sender 000...000 and no value.
@@ -440,7 +440,7 @@ bool hera_parse_sys_option(hera_instance *hera, string const& _name, string cons
       HERA_DEBUG << "Failed to parse hex address: " << name << "\n";
       return false;
     }
-    if (ret.size() != 32) {
+    if (ret.size() != 20) {
       HERA_DEBUG << "Invalid address: " << name << "\n";
       return false;
     }
