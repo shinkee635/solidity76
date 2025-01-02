@@ -34,10 +34,5 @@ jobs:
       - name: Upload Artifact 
         uses: actions/upload-artifact@v3
         with:
-          name: release-ubuntu
+          name: emscripten_build
           path: ${{ github.workspace }}/emscripten_build
-
-      - name: Stop Docker
-        run: |
-          docker stop ${{ env.CONTAINER_NAME }}
-          docker rm ${{ env.CONTAINER_NAME }}
