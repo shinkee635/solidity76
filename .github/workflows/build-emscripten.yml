@@ -1,0 +1,43 @@
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ disabled ]
+
+jobs:
+  build-and-test:
+    env:
+      DOCKER_REPOSITORY: solbuildpackpusher/solidity-buildpack-deps
+      CONTAINER_NAME: ems
+      IMAGE_NAME: buildpack-deps
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        image_variant: [emscripten]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build ${{ env.IMAGE_NAME }}-${{ matrix.image_variant }}
+        run: |
+          chmod +x scripts/ci/docker_build.sh
+          cp scripts/docker/buildpack-deps/emscripten.jam ./
+          scripts/ci/docker_build.sh ${{ env.IMAGE_NAME }} ${{ matrix.image_variant }} ${{ env.DOCKER_REPOSITORY }} ${{ env.CONTAINER_NAME }}
+
+      - name: Run EMScripten Build
+        run: |
+          scripts/build_emscripten.sh
+                
+      - name: Upload Artifact 
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-ubuntu
+          path: ${{ github.workspace }}/emscripten_build
+
+      - name: Stop Docker
+        run: |
+          docker stop ${{ env.CONTAINER_NAME }}
+          docker rm ${{ env.CONTAINER_NAME }}
