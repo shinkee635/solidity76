@@ -10,6 +10,7 @@ jobs:
       DOCKER_REPOSITORY: solbuildpackpusher/solidity-buildpack-deps
       CONTAINER_NAME: ems
       IMAGE_NAME: buildpack-deps
+      CIRCLE_BRANCH: release
 
     runs-on: ubuntu-latest
 
@@ -35,4 +36,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: emscripten_build
-          path: ${{ github.workspace }}/emscripten_build
+          path: ${{ github.workspace }}/upload
